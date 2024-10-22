@@ -13,12 +13,13 @@ function HomeScreen:new(mgr, ctrls)
     local items = {{
         label = "Games & Things",
         onSelect = function()
+            mgr:switchTo('Games')
             return
         end
     }, {
         label = "Store Catalog",
         onSelect = function()
-            mgr:switchTo('Games')
+            mgr:switchTo('Catalog')
             return
         end
     }, {
@@ -28,13 +29,13 @@ function HomeScreen:new(mgr, ctrls)
             return
         end
     }, {
-        label = "Playground (Dev)",
+        label = "Developer Playground",
         onSelect = function()
             mgr:switchTo('Playground')
             return
         end
     }, {
-        label = "Check for updates",
+        label = "Update Arcadia",
         onSelect = function()
             mgr:switchTo('Update')
             return

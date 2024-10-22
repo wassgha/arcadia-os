@@ -6,7 +6,9 @@ local pressed = {}
 
 function Controls:new()
     local obj = setmetatable({}, Controls)
-    obj.callback = function () return end
+    obj.callback = function()
+        return
+    end
     obj.joystickMapping = {
         [9] = "UP",
         [10] = "DOWN",
@@ -28,6 +30,8 @@ function Controls:new()
     obj.keyboardMapping = {
         ['up'] = "UP",
         ['down'] = "DOWN",
+        ['left'] = "LEFT",
+        ['right'] = "RIGHT",
         ['enter'] = "A",
         ['return'] = "A"
     }
@@ -35,7 +39,9 @@ function Controls:new()
 end
 
 function Controls:load()
-    self.callback = function () return end
+    self.callback = function()
+        return
+    end
 
     -- Select the first Joystick
     joysticks = love.joystick.getJoysticks()
@@ -70,12 +76,12 @@ function Controls:update()
                 -- Button is newly pressed, so handle the action
                 self.callback(self:joystick(button))
             end
-            
+
             -- Update the button state
             pressed[button] = curPressed
         end
     end
-end    
+end
 
 function Controls:joystick(scancode)
     return self.joystickMapping[tonumber(scancode)] or scancode

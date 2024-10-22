@@ -35,7 +35,6 @@ function Menu:keypressed(key)
             self.selectedIndex = #self.items -- Loop to the last item
         end
     elseif key == "A" then
-        print("A pressed")
         if type(self.items[self.selectedIndex].onSelect) == "function" then
             self.items[self.selectedIndex].onSelect()
         end

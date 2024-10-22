@@ -32,7 +32,7 @@ function love.load()
     screenManager:addScreen("Home", HomeScreen)
     screenManager:addScreen("Games", GamesScreen)
     screenManager:addScreen("Playground", PlaygroundScreen)
-    screenManager:addScreen("Games", GamesScreen)
+    screenManager:addScreen("Update", UpdateScreen)
     screenManager:addScreen("Options", OptionsScreen)
 
     -- Switch to home by default
@@ -43,9 +43,9 @@ function love.keypressed(key)
     ctrls:keypressed(key)
 end
 
-function love.update()
-    ctrls:update()
-    screenManager:update()
+function love.update(dt)
+    ctrls:update(dt)
+    screenManager:update(dt)
 end
 
 function love.draw()
