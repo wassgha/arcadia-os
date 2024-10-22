@@ -8,7 +8,7 @@ function HomeScreen:new(mgr, ctrls)
     local instance = setmetatable(Screen.new(self, "Home", mgr, ctrls), self)
 
     -- Define menu items
-    local items = { "My Things", "Catalog", "Options", "Check for updates", "Donate", "Exit" }
+    local items = { "Games & Things", "Store Catalog", "Options", "Check for updates", "Donate", "Exit" }
     instance.menu = Menu:new(items, "font.ttf", 24, 42, 8)
     
     return instance

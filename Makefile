@@ -8,11 +8,15 @@ bundle:
 	@zip -r $(DIST) . -x "*.git*" "*.zip" "Makefile" ".DS_Store"
 
 distribute:
-	@./increment_version.sh patch
+	@chmod +x ./increment_version.sh
+	@chmod +x ./generate_hash.sh
+	@./increment_version.sh build
 	@cp VERSION dist/VERSION
 	@make bundle
+	@./generate_hash.sh $(DIST)
+	@cp HASH dist/HASH
 	@rm -rf ./api/public/*
-	@cp -r dist/* ./api/public/*
+	@cp -r dist/* ./api/public/
 
 .PHONY: clean package
 clean:
