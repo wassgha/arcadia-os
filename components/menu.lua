@@ -60,12 +60,12 @@ function Menu:draw(x, y)
         local textWidth = self.font:getWidth(item)
         local textHeight = self.font:getHeight(item) + self.font:getDescent(item)
         
-        love.graphics.setColor(1, 1, 1) -- Red color for selected item
+        love.graphics.setColor(0.9, 0.9, 0.9)
         if i == self.selectedIndex then
             love.graphics.rectangle('fill', startX - paddingX, curY - paddingY, textWidth + 2 * paddingX, textHeight + 2 * paddingY, radius, radius)
-            love.graphics.setColor(0, 0, 0) -- Red color for selected item
+            love.graphics.setColor(0, 0, 0)
         else
-            love.graphics.setColor(1, 1, 1) -- White for non-selected items
+            love.graphics.setColor(1, 1, 1)
         end
         love.graphics.printf(item, startX, curY, self.screenWidth, "left")
     end

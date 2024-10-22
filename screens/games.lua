@@ -15,6 +15,7 @@ function GamesScreen:new(mgr, ctrls)
 end
 
 function GamesScreen:draw()
+    love.graphics.clear(0.05,0.05,0.05)
     self.menu:draw(28, 28) -- Draw the menu
 end
 

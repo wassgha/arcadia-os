@@ -68,7 +68,7 @@ function Controls:update()
             -- Check if the button was not previously pressed
             if curPressed and not pressed[button] then
                 -- Button is newly pressed, so handle the action
-                self.callback(ctrls:joystick(button))
+                self.callback(self:joystick(button))
             end
             
             -- Update the button state
