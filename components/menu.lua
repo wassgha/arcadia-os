@@ -1,21 +1,24 @@
--- menu.lua
+local Button = require("components.button")
 
+-- menu.lua
 Menu = {}
 Menu.__index = Menu
 
 -- Constructor for the Menu class
-function Menu:new(items, fontPath, fontSize, spacing, padding)
+function Menu:new(items, size, spacing, padding)
     local instance = setmetatable({}, Menu)
-    
+
     -- Initialize the menu properties
     instance.items = items or {}
     instance.selectedIndex = 1
-    instance.font = love.graphics.newFont(fontPath, fontSize)
+    instance.size = size
     instance.padding = padding
     instance.spacing = spacing or 100 -- Default spacing between items
     instance.screenWidth, instance.screenHeight = love.graphics.getDimensions()
-    instance.callback = function () return end
-    
+    instance.onSelect = function()
+        return
+    end
+
     return instance
 end
 
@@ -32,42 +35,40 @@ function Menu:keypressed(key)
             self.selectedIndex = #self.items -- Loop to the last item
         end
     elseif key == "A" then
-        print( "A pressed")
-        self.callback(self.selectedIndex)
+        print("A pressed")
+        if type(self.items[self.selectedIndex].onSelect) == "function" then
+            self.items[self.selectedIndex].onSelect()
+        end
+        self.onSelect(self.selectedIndex)
     end
 end
 
 function Menu:onSelect(callback)
     if type(callback) == "function" then
-        self.callback = callback
+        self.onSelect = callback
     else
         error("Callback must be a function")
     end
 end
 
 -- Render the menu on the screen
-function Menu:draw(x, y)    
-    love.graphics.setFont(self.font)
-
+function Menu:draw(x, y)
     local startX = x
     local startY = y
     local paddingX = self.padding
     local paddingY = self.padding
     local radius = 8
-    
+
     for i, item in ipairs(self.items) do
         local curY = startY + (i - 1) * self.spacing
-        local textWidth = self.font:getWidth(item)
-        local textHeight = self.font:getHeight(item) + self.font:getDescent(item)
-        
-        love.graphics.setColor(0.9, 0.9, 0.9)
+
+        local button = Button:new(item.label, self.size, 'primary', radius)
         if i == self.selectedIndex then
-            love.graphics.rectangle('fill', startX - paddingX, curY - paddingY, textWidth + 2 * paddingX, textHeight + 2 * paddingY, radius, radius)
-            love.graphics.setColor(0, 0, 0)
+            button:focus()
         else
-            love.graphics.setColor(1, 1, 1)
+            button:blur()
         end
-        love.graphics.printf(item, startX, curY, self.screenWidth, "left")
+        button:draw(startX, curY)
     end
 end
 

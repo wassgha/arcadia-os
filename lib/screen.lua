@@ -1,24 +1,23 @@
 Screen = {}
 Screen.__index = Screen
 
-function Screen:new(name, mgr, ctrls)
+function Screen:new(mgr, ctrls)
     local instance = setmetatable({}, Screen)
-    instance.name = name
     instance.mgr = mgr
     instance.ctrls = ctrls
     return instance
 end
 
 function Screen:load()
-    print(self.name .. " screen loaded")
+    print("Screen loaded")
 end
 
 function Screen:onEnter()
-    print(self.name .. " screen entered.")
+    print("Screen entered.")
 end
 
 function Screen:onExit()
-    print(self.name .. " screen exited.")
+    print("Screen exited.")
 end
 
 function Screen:update(dt)

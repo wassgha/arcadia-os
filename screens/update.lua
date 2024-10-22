@@ -7,6 +7,9 @@ local CURRENT_VERSION = "1.0.0"
 
 local TEMP_FILE = "temp.love"
 
+local state = "INIT"
+local version
+
 function download(url, savePath)
     local body, code, headers, status = http.request(url)
     if code == 200 then
@@ -26,6 +29,7 @@ function checkForUpdates()
     local remote_version, code, headers, status = http.request(remote_version_url)
     if code == 200 then
         print("Checked remote, latest version: " .. remote_version)
+        version = remote_version
         if remote_version and remote_version ~= CURRENT_VERSION then
             print("New version available: " .. remote_version)
             download(SERVER_URL .. "/store.love", TEMP_FILE)
@@ -62,14 +66,15 @@ function getRemoteHash()
     end
 end
 
-
 function checkHash()
     local file = io.open(TEMP_FILE, "rb")
-    if not file then return false end
+    if not file then
+        return false
+    end
 
     local content = file:read("*all")
     file:close()
-    
+
     local local_hash = string.gsub(love.data.encode("string", "hex", love.data.hash('md5', content)), "%s+", "")
     local remote_hash = string.gsub(getRemoteHash(), "%s+", "")
     print("Local hash: " .. local_hash)
@@ -80,15 +85,26 @@ function checkHash()
     end
 end
 
-local UpdateScreen = setmetatable({}, { __index = Screen })
+local UpdateScreen = setmetatable({}, {
+    __index = Screen
+})
 UpdateScreen.__index = UpdateScreen
 
 function UpdateScreen:new(mgr, ctrls)
-    local instance = setmetatable(Screen.new(self, "Update", mgr, ctrls), self)
+    local instance = setmetatable(Screen.new(self, mgr, ctrls), self)
     return instance
 end
 
 function UpdateScreen:draw()
+    love.graphics.clear(0.05, 0.05, 0.05)
+    if state == 'INIT' then
+        love.graphics.printf("Retrieving latest version ...", 28, 28, self.screenWidth, "left")
+    elseif state == 'PROMPT' then
+        love.graphics.printf("Latest version: " .. version .. ", current version " .. CURRENT_VERSION .. " update?", 28,
+            28, self.screenWidth, "left")
+    elseif state == 'UPDATING' then
+        love.graphics.printf("Updating...", 28, 28, self.screenWidth, "left")
+    end
 end
 
 function UpdateScreen:load()
@@ -97,6 +113,5 @@ function UpdateScreen:load()
     end
     self.mgr:switchTo('Home')
 end
-
 
 return UpdateScreen

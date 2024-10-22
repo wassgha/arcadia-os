@@ -1,23 +1,23 @@
 local Menu = require("components.menu")
 local Screen = require("lib.screen")
 
-local GamesScreen = setmetatable({}, {
+local OptionsScreen = setmetatable({}, {
     __index = Screen
 })
-GamesScreen.__index = GamesScreen
+OptionsScreen.__index = OptionsScreen
 
-function GamesScreen:new(mgr, ctrls)
+function OptionsScreen:new(mgr, ctrls)
     local instance = setmetatable(Screen.new(self, mgr, ctrls), self)
 
     -- Define menu items
     local items = {{
-        label = "Game 1"
+        label = "Option 1"
     }, {
-        label = "Game 2"
+        label = "Option 2"
     }, {
-        label = "Game 3"
+        label = "Option 3"
     }, {
-        label = "Game 4"
+        label = "Option 4"
     }, {
         label = "Back",
         onSelect = function()
@@ -29,16 +29,16 @@ function GamesScreen:new(mgr, ctrls)
     return instance
 end
 
-function GamesScreen:draw()
+function OptionsScreen:draw()
     love.graphics.clear(0.05, 0.05, 0.05)
     self.menu:draw(28, 28) -- Draw the menu
 end
 
-function GamesScreen:load()
+function OptionsScreen:load()
     -- Initialize controls
     self.ctrls:on(function(key)
         self.menu:keypressed(key)
     end)
 end
 
-return GamesScreen
+return OptionsScreen
