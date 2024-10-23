@@ -40,6 +40,10 @@ function Etch:load()
     love.graphics.setBackgroundColor(255, 255, 255)
     ctrls:on(function(key)
         if key == 'B' then
+            screenManager:switchTo("Home")
+            return
+        end
+        if key == 'A' then
             points = {}
             return
         end

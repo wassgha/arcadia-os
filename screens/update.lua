@@ -96,7 +96,7 @@ function UpdateScreen:new(mgr, ctrls)
 end
 
 function UpdateScreen:draw()
-    love.graphics.clear(0.05, 0.05, 0.05)
+    love.graphics.clear(0.00001, 0.000001, 0.000001)
     if state == 'INIT' then
         love.graphics.printf("Retrieving latest version ...", 28, 28, self.screenWidth, "left")
     elseif state == 'PROMPT' then

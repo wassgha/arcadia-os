@@ -27,7 +27,7 @@ function PlaygroundScreen:new(mgr, ctrls)
 end
 
 function PlaygroundScreen:draw()
-    love.graphics.clear(0.05, 0.05, 0.05)
+    love.graphics.clear(0.00001, 0.000001, 0.000001)
     local itemWidth = math.floor((self.screenWidth - self.gap) / self.cols) - self.gap
     local itemHeight = itemWidth * (2 / 3)
     for i, child in ipairs(self.children) do

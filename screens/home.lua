@@ -73,7 +73,7 @@ function HomeScreen:new(mgr, ctrls)
 end
 
 function HomeScreen:draw()
-    love.graphics.clear(0.05, 0.05, 0.05)
+    love.graphics.clear(0.00001, 0.000001, 0.000001)
     self.menu:draw(28, 28) -- Draw the menu
 end
 

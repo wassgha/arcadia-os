@@ -34,7 +34,9 @@ function Controls:new()
         ['left'] = "LEFT",
         ['right'] = "RIGHT",
         ['enter'] = "A",
-        ['return'] = "A"
+        ['return'] = "A",
+        ['escape'] = "B",
+        ['backspace'] = "B"
     }
     return obj
 end
