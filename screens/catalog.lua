@@ -18,12 +18,14 @@ function CatalogScreen:new(mgr, ctrls)
     instance.offsetY = 0
     instance.targetOffsetY = 0
     instance.screenWidth, instance.screenHeight = love.graphics.getDimensions()
-    instance.children = {Card:new("tertiary", 8, "clock", "covers/clock.jpg"), Card:new("tertiary", 8, "clock"),
-                         Card:new("tertiary", 8, "clock"), Card:new("tertiary", 8, "clock"),
-                         Card:new("tertiary", 8, "clock"), Card:new("tertiary", 8, "clock"),
-                         Card:new("tertiary", 8, "clock"), Card:new("tertiary", 8, "clock"),
-                         Card:new("tertiary", 8, "clock"), Card:new("tertiary", 8, "clock"),
-                         Card:new("tertiary", 8, "clock")}
+    instance.children = {Card:new("Clock", "secondary", 5, "clock", "apps/clock/cover.jpg"),
+                         Card:new("Calculator", "secondary", 5, "clock", "apps/calculator/cover.jpg"),
+                         Card:new("Sketch", "secondary", 5, "clock", "apps/etch/cover.jpg"),
+                         Card:new("Fortune", "secondary", 5, "clock", "apps/fortune/cover.jpg"),
+                         Card:new("", "tertiary", 5, "clock"), Card:new("", "tertiary", 5, "clock"),
+                         Card:new("", "tertiary", 5, "clock"), Card:new("", "tertiary", 5, "clock"),
+                         Card:new("", "tertiary", 5, "clock"), Card:new("", "tertiary", 5, "clock"),
+                         Card:new("", "tertiary", 5, "clock")}
 
     return instance
 end
@@ -96,7 +98,23 @@ function CatalogScreen:load()
                 self.focused = #self.children
             end
         elseif key == 'A' then
-            self.mgr:switchTo("Clock")
+            if self.focused == 1 then
+                self.mgr:switchTo("App", {
+                    appName = 'clock'
+                })
+            elseif self.focused == 2 then
+                self.mgr:switchTo("App", {
+                    appName = 'calculator'
+                })
+            elseif self.focused == 3 then
+                self.mgr:switchTo("App", {
+                    appName = 'etch'
+                })
+            elseif self.focused == 4 then
+                self.mgr:switchTo("App", {
+                    appName = 'fortune'
+                })
+            end
         else
             self.mgr:switchTo("Home")
         end

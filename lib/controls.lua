@@ -6,6 +6,7 @@ local pressed = {}
 
 function Controls:new()
     local obj = setmetatable({}, Controls)
+    obj.keyRepeat = false
     obj.callback = function()
         return
     end
@@ -52,15 +53,25 @@ function Controls:load()
     end
 end
 
-function Controls:on(callback)
+function Controls:on(callback, keyRepeat)
     if type(callback) == "function" then
         self.callback = callback
+        self.keyRepeat = keyRepeat or false
+        if self.keyRepeat then
+            love.keyboard.setKeyRepeat(true)
+        else
+            love.keyboard.setKeyRepeat(false)
+        end
     else
         error("Callback must be a function")
     end
 end
 
 function Controls:keypressed(key)
+    self.callback(self:keyboard(key))
+end
+
+function Controls:keydown(key)
     self.callback(self:keyboard(key))
 end
 
@@ -72,7 +83,7 @@ function Controls:update()
             local curPressed = joystick:isDown(button)
 
             -- Check if the button was not previously pressed
-            if curPressed and not pressed[button] then
+            if curPressed and (not pressed[button] or self.keyRepeat) then
                 -- Button is newly pressed, so handle the action
                 self.callback(self:joystick(button))
             end
@@ -89,6 +100,14 @@ end
 
 function Controls:keyboard(scancode)
     return self.keyboardMapping[scancode] or scancode
+end
+
+function Controls:joystickXY()
+    -- Check if the joystick is connected
+    if joystick then
+        return joystick:getAxis(1), joystick:getAxis(2)
+    end
+    return 0, 0
 end
 
 return Controls

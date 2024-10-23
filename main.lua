@@ -8,21 +8,21 @@ local OptionsScreen = require("screens.options")
 local AboutScreen = require("screens.about")
 local GamesScreen = require("screens.games")
 local UpdateScreen = require("screens.update")
-local ClockScreen = require("screens.clock")
+local AppScreen = require("screens.app")
 local PlaygroundScreen = require("screens.playground")
 local CatalogScreen = require("screens.catalog")
 
-local ctrls = Controls.new()
+ctrls = Controls.new()
 
 -- Create a screen manager
-local screenManager = ScreenManager:new(crtls)
+screenManager = ScreenManager:new(crtls)
 
 -- Create screens
 local HomeScreen = HomeScreen:new(screenManager, ctrls)
 local GamesScreen = GamesScreen:new(screenManager, ctrls)
 local OptionsScreen = OptionsScreen:new(screenManager, ctrls)
 local AboutScreen = AboutScreen:new(screenManager, ctrls)
-local ClockScreen = ClockScreen:new(screenManager, ctrls)
+local AppScreen = AppScreen:new(screenManager, ctrls)
 local UpdateScreen = UpdateScreen:new(screenManager, ctrls)
 local PlaygroundScreen = PlaygroundScreen:new(screenManager, ctrls)
 local CatalogScreen = CatalogScreen:new(screenManager, ctrls)
@@ -41,7 +41,7 @@ function love.load()
     screenManager:addScreen("Playground", PlaygroundScreen)
     screenManager:addScreen("Update", UpdateScreen)
     screenManager:addScreen("Options", OptionsScreen)
-    screenManager:addScreen("Clock", ClockScreen)
+    screenManager:addScreen("App", AppScreen)
     screenManager:addScreen("About", AboutScreen)
 
     -- Switch to home by default

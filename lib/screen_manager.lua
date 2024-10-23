@@ -1,8 +1,6 @@
 -- screen.lua
-
 ScreenManager = {}
 ScreenManager.__index = ScreenManager
-
 
 function ScreenManager:new()
     local instance = setmetatable({}, ScreenManager)
@@ -15,7 +13,7 @@ function ScreenManager:addScreen(name, screen)
     self.screens[name] = screen
 end
 
-function ScreenManager:switchTo(name)
+function ScreenManager:switchTo(name, params)
     if self.screens[name] then
         if self.currentScreen and self.currentScreen.onExit then
             self.currentScreen:onExit()
@@ -23,8 +21,8 @@ function ScreenManager:switchTo(name)
 
         self.currentScreen = self.screens[name]
         if self.currentScreen.load then
-            self.currentScreen:load()
-        end    
+            self.currentScreen:load(params)
+        end
 
         if self.currentScreen.onEnter then
             self.currentScreen:onEnter()

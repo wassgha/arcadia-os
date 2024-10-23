@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo "🎮 Starting Arcadia Store..."
+echo "🎮 Starting Arcadia..."
 
-cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/ArcadiaStore"
+cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/Arcadia"
 $ESUDO chmod +x ./Store
 
 echo "$(date)" > ./Store.log

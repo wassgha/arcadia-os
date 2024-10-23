@@ -5,7 +5,7 @@ local ImageStore = {}
 
 function ImageStore.loadImage(filename)
     if not images[filename] then
-        images[filename] = love.graphics.newImage("assets/" .. filename)
+        images[filename] = love.graphics.newImage(filename)
     end
     return images[filename]
 end

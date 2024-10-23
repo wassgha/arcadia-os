@@ -1,23 +1,18 @@
-local Menu = require("components.menu")
-local Screen = require("lib.screen")
+local Clock = setmetatable({}, {})
+Clock.__index = Clock
 
-local ClockScreen = setmetatable({}, {
-    __index = Screen
-})
-ClockScreen.__index = ClockScreen
-
-function ClockScreen:new(mgr, ctrls)
-    local instance = setmetatable(Screen.new(self, mgr, ctrls), self)
+function Clock:new()
+    local instance = setmetatable({}, self)
     instance.currentTime = os.date("%H:%M:%S")
     instance.font = love.graphics.newFont("font.ttf", 80)
     return instance
 end
 
-function ClockScreen:update()
+function Clock:update()
     self.currentTime = os.date("%H:%M:%S")
 end
 
-function ClockScreen:draw()
+function Clock:draw()
     love.graphics.setFont(self.font)
     love.graphics.clear(0.05, 0.05, 0.05)
     -- Set the background color
@@ -44,11 +39,7 @@ function ClockScreen:draw()
     love.graphics.rectangle("line", x - 20, y - 20, timeWidth + 40, timeHeight + 40) -- Border around the time
 end
 
-function ClockScreen:load()
-    -- Initialize controls
-    self.ctrls:on(function(key)
-        self.mgr:switchTo('Catalog')
-    end)
+function Clock:load()
 end
 
-return ClockScreen
+return Clock

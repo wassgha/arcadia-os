@@ -69,7 +69,7 @@ function Focusable:draw(x, y, width, height, padding)
     if self.variant == Variant.TERTIARY then
         love.graphics.setLineWidth(1)
         love.graphics.setColor(0.4, 0.4, 0.4)
-        love.graphics.rectangle('line', startX, startY, width, height, radius / 2, radius / 2)
+        love.graphics.rectangle('line', startX, startY, width, height, (radius + 2) / 2, (radius + 2) / 2)
     end
 
     -- Render contents
