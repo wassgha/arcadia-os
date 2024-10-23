@@ -1,5 +1,6 @@
 local Focusable = require("components.focusable")
 local IconStore = require("lib.icon_store")
+local ImageStore = require("lib.image_store")
 
 Card = setmetatable({}, {
     __index = Focusable
@@ -7,11 +8,12 @@ Card = setmetatable({}, {
 Card.__index = Card
 
 -- Constructor for the Menu class
-function Card:new(variant, padding, icon)
+function Card:new(variant, padding, icon, cover)
     local instance = setmetatable(Focusable.new(variant), self)
 
     -- Initialize the menu properties
     instance.icon = icon or nil
+    instance.cover = cover or nil
     instance.padding = padding
     instance.variant = variant or Variant.PRIMARY
     instance.screenWidth, instance.screenHeight = love.graphics.getDimensions()
@@ -32,13 +34,23 @@ function Card:draw(x, y, width, height)
 
     Focusable.draw(self, startX, startY, cardWidth, cardHeight, self.padding)
 
-    -- Draw the leading icon if provided
+    -- Draw the placeholder icon if provided
     if self.icon then
         local icon = IconStore.loadIcon("pixelarticons/light/" .. self.icon)
         local scaleFactor = iconSize / icon.getWidth(icon)
         if icon then
             love.graphics.draw(icon, startX + cardWidth / 2 - iconSize / 2, startY + cardHeight / 2 - iconSize / 2, 0,
                 scaleFactor, scaleFactor, 0, 0)
+        end
+    end
+
+    -- Draw the placeholder icon if provided
+    if self.cover then
+        local cover = ImageStore.loadImage(self.cover)
+        local scaleFactor = cardHeight / cover.getHeight(cover)
+        if cover then
+            love.graphics.setColor(1, 1, 1, 1)
+            love.graphics.draw(cover, startX, startY, 0, scaleFactor, scaleFactor, 0, 0)
         end
     end
 end

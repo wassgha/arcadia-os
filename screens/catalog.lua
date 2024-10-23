@@ -18,7 +18,7 @@ function CatalogScreen:new(mgr, ctrls)
     instance.offsetY = 0
     instance.targetOffsetY = 0
     instance.screenWidth, instance.screenHeight = love.graphics.getDimensions()
-    instance.children = {Card:new("tertiary", 8, "clock"), Card:new("tertiary", 8, "clock"),
+    instance.children = {Card:new("tertiary", 8, "clock", "covers/clock.jpg"), Card:new("tertiary", 8, "clock"),
                          Card:new("tertiary", 8, "clock"), Card:new("tertiary", 8, "clock"),
                          Card:new("tertiary", 8, "clock"), Card:new("tertiary", 8, "clock"),
                          Card:new("tertiary", 8, "clock"), Card:new("tertiary", 8, "clock"),
@@ -95,6 +95,8 @@ function CatalogScreen:load()
             if self.focused < 1 then
                 self.focused = #self.children
             end
+        elseif key == 'A' then
+            self.mgr:switchTo("Clock")
         else
             self.mgr:switchTo("Home")
         end
