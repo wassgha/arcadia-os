@@ -1,13 +1,15 @@
 local Controls = require("lib.controls")
-local ScreenManager = require("lib.screenmanager")
+local ScreenManager = require("lib.screen_manager")
 local Screen = require("lib.screen")
 
 -- Screens
 local HomeScreen = require("screens.home")
 local OptionsScreen = require("screens.options")
+local AboutScreen = require("screens.about")
 local GamesScreen = require("screens.games")
 local UpdateScreen = require("screens.update")
 local PlaygroundScreen = require("screens.playground")
+local CatalogScreen = require("screens.catalog")
 
 local ctrls = Controls.new()
 
@@ -18,8 +20,10 @@ local screenManager = ScreenManager:new(crtls)
 local HomeScreen = HomeScreen:new(screenManager, ctrls)
 local GamesScreen = GamesScreen:new(screenManager, ctrls)
 local OptionsScreen = OptionsScreen:new(screenManager, ctrls)
+local AboutScreen = AboutScreen:new(screenManager, ctrls)
 local UpdateScreen = UpdateScreen:new(screenManager, ctrls)
 local PlaygroundScreen = PlaygroundScreen:new(screenManager, ctrls)
+local CatalogScreen = CatalogScreen:new(screenManager, ctrls)
 
 function love.load()
     -- Initialize Controls
@@ -31,9 +35,11 @@ function love.load()
     -- Register Screens
     screenManager:addScreen("Home", HomeScreen)
     screenManager:addScreen("Games", GamesScreen)
+    screenManager:addScreen("Catalog", CatalogScreen)
     screenManager:addScreen("Playground", PlaygroundScreen)
     screenManager:addScreen("Update", UpdateScreen)
     screenManager:addScreen("Options", OptionsScreen)
+    screenManager:addScreen("About", AboutScreen)
 
     -- Switch to home by default
     screenManager:switchTo("Home")

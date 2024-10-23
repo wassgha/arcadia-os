@@ -61,7 +61,7 @@ function Menu:draw(x, y)
     for i, item in ipairs(self.items) do
         local curY = startY + (i - 1) * self.spacing
 
-        local button = Button:new(item.label, self.size, 'primary', radius)
+        local button = Button:new(item.label, self.size, 'primary', radius, item.icon)
         if i == self.selectedIndex then
             button:focus()
         else

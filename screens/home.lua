@@ -12,42 +12,56 @@ function HomeScreen:new(mgr, ctrls)
     -- Define menu items
     local items = {{
         label = "Games & Things",
+        icon = "gamepad",
         onSelect = function()
             mgr:switchTo('Games')
             return
         end
     }, {
-        label = "Store Catalog",
+        label = "Catalog",
+        icon = "shopping-bag",
         onSelect = function()
             mgr:switchTo('Catalog')
             return
         end
     }, {
         label = "Options",
+        icon = "command",
         onSelect = function()
             mgr:switchTo('Options')
             return
         end
     }, {
         label = "Developer Playground",
+        icon = "debug",
         onSelect = function()
             mgr:switchTo('Playground')
             return
         end
     }, {
         label = "Update Arcadia",
+        icon = "reload",
         onSelect = function()
             mgr:switchTo('Update')
             return
         end
     }, {
         label = "Donate",
+        icon = "heart",
         onSelect = function()
             mgr:switchTo('Donate')
             return
         end
     }, {
+        label = "About",
+        icon = "info-box",
+        onSelect = function()
+            mgr:switchTo('About')
+            return
+        end
+    }, {
         label = "Exit",
+        icon = "logout",
         onSelect = function()
             os.exit()
             return

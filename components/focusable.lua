@@ -2,7 +2,7 @@
 Focusable = {}
 Focusable.__index = Focusable
 
-local Variant = {
+Variant = {
     PRIMARY = 'primary',
     SECONDARY = 'secondary',
     TERTIARY = 'tertiary'

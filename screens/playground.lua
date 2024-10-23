@@ -12,7 +12,7 @@ local SCROLL_SPEED = 10
 function PlaygroundScreen:new(mgr, ctrls)
     local instance = setmetatable(Screen.new(self, mgr, ctrls), self)
     instance.focused = 1
-    instance.cols = 3
+    instance.cols = 2
     instance.gap = 12
     instance.offsetX = 0
     instance.offsetY = 0
