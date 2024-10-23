@@ -97,24 +97,30 @@ function Clock:draw()
         local secondString = string.format("%02d", second)
 
         -- Draw flip clock face
-        local boxWidth = 100
         local boxHeight = 160
+        local smallBoxWidth = 60
+        local bigBoxWidth = 100
         local gap = 10
         local digits = {hourString:sub(1, 1), hourString:sub(2, 2), ":", minuteString:sub(1, 1), minuteString:sub(2, 2),
                         ":", secondString:sub(1, 1), secondString:sub(2, 2)}
 
+        local x = centerX - (6 * (bigBoxWidth + gap)) / 2 - (2 * (smallBoxWidth + gap)) / 2
         for i, digit in ipairs(digits) do
+            local boxWidth = i % 3 == 0 and smallBoxWidth or bigBoxWidth
             love.graphics.setColor(0.1, 0.1, 0.1) -- Dark background for flip boxes
-            local x = centerX + (i - 1) * (boxWidth + gap) - (8 * (boxWidth + gap)) / 2 -- Calculate x position
-            love.graphics.rectangle("fill", x, centerY - boxHeight / 2, boxWidth, boxHeight) -- Draw the box
+            love.graphics.setLineStyle("rough")
+            love.graphics.rectangle("fill", x, centerY - boxHeight / 2, boxWidth, boxHeight, 6) -- Draw the box
             love.graphics.setColor(1, 1, 1) -- White color for numbers
-            love.graphics.printf(digit, x + 5, centerY - boxHeight / 2 + 30, boxWidth, "center") -- Draw the digit
+            love.graphics.printf(digit, x, centerY - boxHeight / 2 + 26, boxWidth, "center") -- Draw the digit
             love.graphics.setColor(0, 0, 0) -- Black color for divider
             love.graphics.setLineWidth(4)
             love.graphics.line(x, centerY + 2, x + boxWidth, centerY + 2)
-            love.graphics.setColor(0.2, 0.2, 0.2) -- Black color for divider
+            love.graphics.setColor(0.05, 0.05, 0.05) -- Black color for divider
             love.graphics.setLineWidth(4)
             love.graphics.line(x, centerY - 2, x + boxWidth, centerY - 2)
+            love.graphics.setColor(0.15, 0.15, 0.15) -- Black color for divider
+            love.graphics.line(x, centerY + 6, x + boxWidth, centerY + 6)
+            x = x + boxWidth + gap
         end
 
         love.graphics.pop()
