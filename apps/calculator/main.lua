@@ -1,109 +1,126 @@
 local Calculator = setmetatable({}, {})
 Calculator.__index = Calculator
 
-local Button = {}
-Button.__index = Button
-
-function Button:new(label, x, y, width, height, onClick)
-    local btn = setmetatable({}, Button)
-    btn.label = label
-    btn.x = x
-    btn.y = y
-    btn.width = width
-    btn.height = height
-    btn.onClick = onClick
-    return btn
-end
-
-function Button:draw()
-    love.graphics.setColor(1, 1, 1) -- White background
-    love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
-    love.graphics.setColor(0, 0, 0) -- Black text
-    love.graphics.printf(self.label, self.x, self.y + self.height / 4, self.width, "center")
-end
-
-function Button:isPressed(mx, my)
-    return mx > self.x and mx < self.x + self.width and my > self.y and my < self.y + self.height
-end
-
-local currentInput = ""
-local buttons = {}
-local screenFont
+local Operators = {
+    ADD = '+',
+    SUBTRACT = '-',
+    MULTIPLY = '*',
+    DIVIDE = '/'
+}
 
 function Calculator:new()
     local instance = setmetatable({}, self)
-    instance.currentTime = os.date("%H:%M:%S")
-    instance.font = love.graphics.newFont("font.ttf", 80)
+    instance.display = "0"
+    instance.currentValue = ""
+    instance.operator = nil
+    instance.previousValue = nil
+    instance.font = love.graphics.newFont("font.ttf", 140)
     return instance
+end
+
+function Calculator:reset()
+    self.display = "0"
+    self.currentValue = ""
+    self.operator = nil
+    self.previousValue = nil
 end
 
 function Calculator:update()
 end
 
-function Calculator:draw()
-    -- Draw the input display area
-    love.graphics.setColor(1, 1, 1) -- White background
-    love.graphics.rectangle("fill", 20, 20, love.graphics.getWidth() - 40, 80)
-    love.graphics.setColor(0, 0, 0) -- Black text
-    love.graphics.setFont(screenFont)
-    love.graphics.printf(currentInput, 30, 40, love.graphics.getWidth() - 60, "right")
+function Calculator:updateInput(key)
+    if tonumber(key) or key == "0" then
+        self.currentValue = self.currentValue .. key
+        self.display = self.currentValue
+    elseif key == 'X' then
+        self.currentValue = self.currentValue:sub(1, -2)
+        self.display = self.currentValue == "" and "0" or self.currentValue
+    elseif key == "UP" then
+        self.currentValue = tostring((tonumber(self.currentValue) or 0) + 1)
+        self.display = self.currentValue
+    elseif key == "DOWN" then
+        self.currentValue = tostring((tonumber(self.currentValue) or 0) - 1)
+        self.display = self.currentValue
+    end
+end
 
-    -- Draw all buttons
-    for _, btn in ipairs(buttons) do
-        btn:draw()
+function Calculator:applyOperator(operator)
+    if self.previousValue == nil then
+        self.previousValue = self.currentValue
+    else
+        self:calculate()
+    end
+    self.currentValue = ""
+    self.operator = operator
+end
+
+function Calculator:calculate()
+    if self.operator and self.previousValue and self.currentValue ~= "" then
+        local a = tonumber(self.previousValue)
+        local b = tonumber(self.currentValue)
+        local result
+
+        if self.operator == Operators.ADD then
+            result = a + b
+        elseif self.operator == Operators.SUBTRACT then
+            result = a - b
+        elseif self.operator == Operators.MULTIPLY then
+            result = a * b
+        elseif self.operator == Operators.DIVIDE and b ~= 0 then
+            result = a / b
+        end
+
+        self.display = tostring(result)
+        self.previousValue = result
+        self.currentValue = ""
+        self.operator = nil
+    end
+end
+
+function Calculator:keypressed(key)
+    if key == "B" then
+        screenManager:switchTo("Catalog")
+    elseif key == "A" then
+        self:calculate()
+    elseif key == "Y" then
+        self:reset()
+    elseif key == "R1" then
+        self:applyOperator(Operators.ADD)
+    elseif key == "R2" then
+        self:applyOperator(Operators.SUBTRACT)
+    elseif key == "L1" then
+        self:applyOperator(Operators.MULTIPLY)
+    elseif key == "L2" then
+        self:applyOperator(Operators.DIVIDE)
+    else
+        self:updateInput(key)
+    end
+end
+
+function Calculator:draw()
+    local centerX, centerY = love.graphics.getWidth() / 2, love.graphics.getHeight() / 2
+
+    love.graphics.clear(0, 0, 0)
+    love.graphics.setFont(self.font)
+    love.graphics.setColor(1, 1, 1)
+
+    -- Get the width and height of the display text
+    local displayWidth = self.font:getWidth(self.display)
+    local displayHeight = self.font:getHeight(self.display)
+
+    -- Draw the display text centered
+    love.graphics.printf(self.display, centerX - displayWidth / 2, centerY - displayHeight / 2,
+        love.graphics.getWidth(), "left")
+    if self.operator then
+        love.graphics.printf(self.operator, love.graphics.getWidth() - 86, centerY + displayHeight / 2,
+            love.graphics.getWidth(), "left")
     end
 end
 
 function Calculator:load()
-    -- Set up the font for the calculator display
-    screenFont = love.graphics.newFont(32)
-
-    -- Define buttons
-    local buttonWidth, buttonHeight = 100, 60
-    local xOffset, yOffset = 20, 120
-    local gap = 10
-
-    -- Number buttons
-    for i = 0, 9 do
-        local x = (i % 3) * (buttonWidth + gap) + xOffset
-        local y = math.floor(i / 3) * (buttonHeight + gap) + yOffset
-        if i == 0 then
-            x = xOffset + (buttonWidth + gap) -- Position "0" button at the bottom
-            y = y + buttonHeight + gap
-        end
-        table.insert(buttons, Button:new(tostring(i), x, y, buttonWidth, buttonHeight, function()
-            currentInput = currentInput .. tostring(i)
-        end))
-    end
-
-    -- Operator buttons
-    local operators = {"+", "-", "*", "/"}
-    for i, op in ipairs(operators) do
-        local x = 3 * (buttonWidth + gap) + xOffset -- Right column
-        local y = (i - 1) * (buttonHeight + gap) + yOffset
-        table.insert(buttons, Button:new(op, x, y, buttonWidth, buttonHeight, function()
-            currentInput = currentInput .. op
-        end))
-    end
-
-    -- Clear button
-    table.insert(buttons,
-        Button:new("C", xOffset, yOffset + 3 * (buttonHeight + gap) + buttonHeight + gap, buttonWidth, buttonHeight,
-            function()
-                currentInput = ""
-            end))
-
-    -- Equal button
-    table.insert(buttons,
-        Button:new("=", xOffset + buttonWidth + gap, yOffset + 3 * (buttonHeight + gap) + buttonHeight + gap,
-            buttonWidth * 2 + gap, buttonHeight, function()
-                local result = load("return " .. currentInput)() -- Unsafe for external inputs!
-                if result then
-                    currentInput = tostring(result)
-                else
-                    currentInput = "Error"
-                end
-            end))
+    ctrls:on(function(key)
+        self:keypressed(key)
+    end)
 end
 
 return Calculator

@@ -36,7 +36,13 @@ function Controls:new()
         ['enter'] = "A",
         ['return'] = "A",
         ['escape'] = "B",
-        ['backspace'] = "B"
+        ['backspace'] = "B",
+        ['space'] = "Y",
+        ['option'] = "X",
+        ['P'] = "L1",
+        ['['] = "L2",
+        [']'] = "R2",
+        ['\\'] = "R1"
     }
     return obj
 end

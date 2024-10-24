@@ -26,9 +26,10 @@ function Clock:draw()
 
     local centerX, centerY = love.graphics.getWidth() / 2, love.graphics.getHeight() / 2
 
+    love.graphics.clear(0, 0, 0)
+
     if self.face == ClockFaces.DIGITAL then
         love.graphics.setFont(self.font)
-        love.graphics.clear(0, 0, 0)
 
         -- Set text color
         love.graphics.setColor(1, 1, 1) -- White text
@@ -130,7 +131,7 @@ end
 function Clock:load()
     ctrls:on(function(key)
         if key == 'B' then
-            screenManager:switchTo("Home")
+            screenManager:switchTo("Catalog")
             return
         end
         if key == 'A' then

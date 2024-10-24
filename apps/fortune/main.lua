@@ -129,7 +129,7 @@ function Fortune:load()
     self.fortune = fortunes[math.random(1, #fortunes)]
 
     ctrls:on(function(key)
-        screenManager:switchTo("Home")
+        screenManager:switchTo("Catalog")
         return
     end)
 end

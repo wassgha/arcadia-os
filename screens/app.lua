@@ -13,14 +13,14 @@ function AppScreen:new()
 end
 
 function AppScreen:update(dt)
-    if not self.app then
+    if not self.app or not self.app.update then
         return
     end
     self.app:update(dt)
 end
 
 function AppScreen:draw()
-    if not self.app then
+    if not self.app or not self.app.draw then
         return
     end
     self.app:draw()
@@ -37,7 +37,9 @@ function AppScreen:load(params)
     end
     self.appName = params.appName
     self.app = require('apps.' .. self.appName .. '.main'):new()
-    self.app:load()
+    if self.app.load then
+        self.app:load()
+    end
 end
 
 return AppScreen

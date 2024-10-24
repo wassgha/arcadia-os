@@ -14,7 +14,7 @@ function HomeScreen:new()
         label = "Games & Things",
         icon = "gamepad",
         onSelect = function()
-            screenManager:switchTo('Games')
+            screenManager:switchTo('Catalog')
             return
         end
     }, {
