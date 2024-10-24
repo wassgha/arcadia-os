@@ -1,7 +1,12 @@
 local ImageStore = require("lib.image_store")
+local Animation = require("lib.animation")
 
 local Fortune = setmetatable({}, {})
 Fortune.__index = Fortune
+
+local background = ImageStore.loadImage("apps/fortune/cover.jpg")
+local sprite = ImageStore.loadImage("apps/fortune/sprite.jpg")
+local spriteAnimation
 
 local fortunes = {"You will make a valuable discovery.", "An unexpected journey will soon begin.",
                   "Your creativity will open new doors for you.", "You will make a difference in someone’s life.",
@@ -73,13 +78,12 @@ function Fortune:new()
     return instance
 end
 
-function Fortune:update()
+function Fortune:update(dt)
+    spriteAnimation:update(dt)
 end
 
 function Fortune:draw()
     love.graphics.setFont(self.font)
-
-    local background = ImageStore.loadImage("apps/fortune/cover.jpg")
 
     local box_padding = 20
     local box_margin = 30
@@ -98,10 +102,10 @@ function Fortune:draw()
     if background then
         local scaleFactor = (love.graphics.getWidth() / 2) / background.getWidth(background)
         love.graphics.setColor(1, 1, 1, 1)
-        love.graphics.draw(background,
-            love.graphics.getWidth() - (background.getWidth(background) * scaleFactor) + box_margin * 2, love.graphics
-                .getHeight() - (background.getHeight(background) * scaleFactor) + box_margin * 2, 0, scaleFactor,
-            scaleFactor, 0, 0)
+        spriteAnimation:draw(
+            love.graphics.getWidth() - (background.getWidth(background) * scaleFactor) + box_margin * 2,
+            love.graphics.getHeight() - (background.getHeight(background) * scaleFactor) + box_margin * 2, 0,
+            scaleFactor, scaleFactor, 0, 0)
     end
 
     -- Draw outer border (2nd border)
@@ -127,6 +131,7 @@ end
 function Fortune:load()
     math.randomseed(os.time())
     self.fortune = fortunes[math.random(1, #fortunes)]
+    spriteAnimation = Animation:new(sprite, 2, 0.3)
 
     ctrls:on(function(key)
         screenManager:switchTo("Catalog")

@@ -1,11 +1,11 @@
 Animation = {}
 Animation.__index = Animation
 
-function Animation:new(spriteSheet, frameWidth, frameHeight, numFrames, animationSpeed)
+function Animation:new(spriteSheet, numFrames, animationSpeed)
     local this = {
         spriteSheet = spriteSheet,
-        frameWidth = frameWidth,
-        frameHeight = frameHeight,
+        frameWidth = spriteSheet:getWidth() / numFrames,
+        frameHeight = spriteSheet:getHeight(),
         frames = {},
         currentFrame = 1,
         animationTimer = 0,
@@ -14,7 +14,8 @@ function Animation:new(spriteSheet, frameWidth, frameHeight, numFrames, animatio
 
     for i = 0, numFrames - 1 do
         table.insert(this.frames,
-            love.graphics.newQuad(i * frameWidth, 0, frameWidth, frameHeight, spriteSheet:getDimensions()))
+            love.graphics.newQuad(i * this.frameWidth, 0, this.frameWidth, this.frameHeight, spriteSheet:getWidth(),
+                spriteSheet:getHeight()))
     end
 
     setmetatable(this, self)
@@ -34,6 +35,8 @@ function Animation:update(dt)
     end
 end
 
-function Animation:draw(x, y)
-    love.graphics.draw(self.spriteSheet, self.frames[self.currentFrame], x, y)
+function Animation:draw(x, y, r, sx, sy, ox, oy, kx, ky)
+    love.graphics.draw(self.spriteSheet, self.frames[self.currentFrame], x, y, r, sx, sy, ox, oy, kx, ky)
 end
+
+return Animation
