@@ -5,8 +5,8 @@ local AppScreen = setmetatable({}, {
 })
 AppScreen.__index = AppScreen
 
-function AppScreen:new(mgr, ctrls)
-    local instance = setmetatable(Screen.new(self, mgr, ctrls), self)
+function AppScreen:new()
+    local instance = setmetatable(Screen.new(self), self)
     instance.app = nil
     instance.appName = nil
     return instance

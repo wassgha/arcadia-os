@@ -6,57 +6,57 @@ local HomeScreen = setmetatable({}, {
 })
 HomeScreen.__index = HomeScreen
 
-function HomeScreen:new(mgr, ctrls)
-    local instance = setmetatable(Screen.new(self, mgr, ctrls), self)
+function HomeScreen:new()
+    local instance = setmetatable(Screen.new(self), self)
 
     -- Define menu items
     local items = {{
         label = "Games & Things",
         icon = "gamepad",
         onSelect = function()
-            mgr:switchTo('Games')
+            screenManager:switchTo('Games')
             return
         end
     }, {
         label = "Catalog",
         icon = "shopping-bag",
         onSelect = function()
-            mgr:switchTo('Catalog')
+            screenManager:switchTo('Catalog')
             return
         end
     }, {
         label = "Options",
         icon = "command",
         onSelect = function()
-            mgr:switchTo('Options')
+            screenManager:switchTo('Options')
             return
         end
     }, {
         label = "Developer Playground",
         icon = "debug",
         onSelect = function()
-            mgr:switchTo('Playground')
+            screenManager:switchTo('Playground')
             return
         end
     }, {
         label = "Update Arcadia",
         icon = "reload",
         onSelect = function()
-            mgr:switchTo('Update')
+            screenManager:switchTo('Update')
             return
         end
     }, {
         label = "Donate",
         icon = "heart",
         onSelect = function()
-            mgr:switchTo('Donate')
+            screenManager:switchTo('Donate')
             return
         end
     }, {
         label = "About",
         icon = "info-box",
         onSelect = function()
-            mgr:switchTo('About')
+            screenManager:switchTo('About')
             return
         end
     }, {
@@ -73,13 +73,12 @@ function HomeScreen:new(mgr, ctrls)
 end
 
 function HomeScreen:draw()
-    love.graphics.clear(0.00001, 0.000001, 0.000001)
     self.menu:draw(28, 28) -- Draw the menu
 end
 
 function HomeScreen:load()
     -- Initialize controls
-    self.ctrls:on(function(key)
+    ctrls:on(function(key)
         self.menu:keypressed(key)
     end)
 end

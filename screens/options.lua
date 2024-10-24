@@ -6,8 +6,8 @@ local OptionsScreen = setmetatable({}, {
 })
 OptionsScreen.__index = OptionsScreen
 
-function OptionsScreen:new(mgr, ctrls)
-    local instance = setmetatable(Screen.new(self, mgr, ctrls), self)
+function OptionsScreen:new()
+    local instance = setmetatable(Screen.new(self), self)
 
     -- Define menu items
     local items = {{
@@ -21,7 +21,7 @@ function OptionsScreen:new(mgr, ctrls)
     }, {
         label = "Back",
         onSelect = function()
-            mgr:switchTo('Home')
+            screenManager:switchTo('Home')
         end
     }}
     instance.menu = Menu:new(items, 24, 42, 8)
@@ -30,13 +30,12 @@ function OptionsScreen:new(mgr, ctrls)
 end
 
 function OptionsScreen:draw()
-    love.graphics.clear(0.00001, 0.000001, 0.000001)
     self.menu:draw(28, 28) -- Draw the menu
 end
 
 function OptionsScreen:load()
     -- Initialize controls
-    self.ctrls:on(function(key)
+    ctrls:on(function(key)
         self.menu:keypressed(key)
     end)
 end

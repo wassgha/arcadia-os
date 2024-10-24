@@ -1,4 +1,6 @@
 local Controls = require("lib.controls")
+ctrls = Controls.new()
+
 local ScreenManager = require("lib.screen_manager")
 local Screen = require("lib.screen")
 
@@ -12,20 +14,18 @@ local AppScreen = require("screens.app")
 local PlaygroundScreen = require("screens.playground")
 local CatalogScreen = require("screens.catalog")
 
-ctrls = Controls.new()
-
 -- Create a screen manager
 screenManager = ScreenManager:new(crtls)
 
 -- Create screens
-local HomeScreen = HomeScreen:new(screenManager, ctrls)
-local GamesScreen = GamesScreen:new(screenManager, ctrls)
-local OptionsScreen = OptionsScreen:new(screenManager, ctrls)
-local AboutScreen = AboutScreen:new(screenManager, ctrls)
-local AppScreen = AppScreen:new(screenManager, ctrls)
-local UpdateScreen = UpdateScreen:new(screenManager, ctrls)
-local PlaygroundScreen = PlaygroundScreen:new(screenManager, ctrls)
-local CatalogScreen = CatalogScreen:new(screenManager, ctrls)
+local HomeScreen = HomeScreen:new()
+local GamesScreen = GamesScreen:new()
+local OptionsScreen = OptionsScreen:new()
+local AboutScreen = AboutScreen:new()
+local AppScreen = AppScreen:new()
+local UpdateScreen = UpdateScreen:new()
+local PlaygroundScreen = PlaygroundScreen:new()
+local CatalogScreen = CatalogScreen:new()
 
 function love.load()
     -- Initialize Controls

@@ -9,8 +9,8 @@ CatalogScreen.__index = CatalogScreen
 
 local SCROLL_SPEED = 10
 
-function CatalogScreen:new(mgr, ctrls)
-    local instance = setmetatable(Screen.new(self, mgr, ctrls), self)
+function CatalogScreen:new()
+    local instance = setmetatable(Screen.new(self), self)
     instance.focused = 1
     instance.cols = 2
     instance.gap = 12
@@ -31,7 +31,6 @@ function CatalogScreen:new(mgr, ctrls)
 end
 
 function CatalogScreen:draw()
-    love.graphics.clear(0.00001, 0.000001, 0.000001)
     local itemWidth = math.floor((self.screenWidth - self.gap) / self.cols) - self.gap
     local itemHeight = itemWidth * (2 / 3)
     for i, child in ipairs(self.children) do
@@ -76,7 +75,7 @@ end
 
 function CatalogScreen:load()
     -- Initialize controls
-    self.ctrls:on(function(key)
+    ctrls:on(function(key)
         if key == 'RIGHT' then
             self.focused = self.focused + 1
             if self.focused > #self.children then
@@ -99,24 +98,24 @@ function CatalogScreen:load()
             end
         elseif key == 'A' then
             if self.focused == 1 then
-                self.mgr:switchTo("App", {
+                screenManager:switchTo("App", {
                     appName = 'clock'
                 })
             elseif self.focused == 2 then
-                self.mgr:switchTo("App", {
+                screenManager:switchTo("App", {
                     appName = 'calculator'
                 })
             elseif self.focused == 3 then
-                self.mgr:switchTo("App", {
+                screenManager:switchTo("App", {
                     appName = 'etch'
                 })
             elseif self.focused == 4 then
-                self.mgr:switchTo("App", {
+                screenManager:switchTo("App", {
                     appName = 'fortune'
                 })
             end
         else
-            self.mgr:switchTo("Home")
+            screenManager:switchTo("Home")
         end
     end)
 end

@@ -90,13 +90,12 @@ local UpdateScreen = setmetatable({}, {
 })
 UpdateScreen.__index = UpdateScreen
 
-function UpdateScreen:new(mgr, ctrls)
-    local instance = setmetatable(Screen.new(self, mgr, ctrls), self)
+function UpdateScreen:new()
+    local instance = setmetatable(Screen.new(self), self)
     return instance
 end
 
 function UpdateScreen:draw()
-    love.graphics.clear(0.00001, 0.000001, 0.000001)
     if state == 'INIT' then
         love.graphics.printf("Retrieving latest version ...", 28, 28, self.screenWidth, "left")
     elseif state == 'PROMPT' then
@@ -111,7 +110,7 @@ function UpdateScreen:load()
     if checkForUpdates() then
         love.event.quit('restart')
     end
-    self.mgr:switchTo('Home')
+    screenManager:switchTo('Home')
 end
 
 return UpdateScreen

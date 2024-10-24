@@ -1,10 +1,16 @@
 Screen = {}
 Screen.__index = Screen
 
-function Screen:new(mgr, ctrls)
+ScreenPresentation = {
+    MODAL = 'modal',
+    CARD = 'card'
+}
+
+function Screen:new(options)
     local instance = setmetatable({}, Screen)
-    instance.mgr = mgr
-    instance.ctrls = ctrls
+    instance.options = options or {
+        presentation = ScreenPresentation.CARD
+    }
     return instance
 end
 
