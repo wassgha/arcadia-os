@@ -9,17 +9,17 @@ local sprite = ImageStore.loadImage("apps/fortune/sprite.jpg")
 local spriteAnimation
 
 local fortunes = {"You will make a valuable discovery.", "An unexpected journey will soon begin.",
-                  "Your creativity will open new doors for you.", "You will make a difference in someone’s life.",
+                  "Your creativity will open new doors for you.", "You will make a difference in someone's life.",
                   "An exciting opportunity lies ahead.", "Your hard work will inspire others.",
-                  "Change is coming—embrace it with open arms.", "A great adventure is waiting for you.",
+                  "Change is coming, embrace it with open arms.", "A great adventure is waiting for you.",
                   "Luck is on your side this week.", "You will attract positive energy wherever you go.",
                   "A peaceful mind brings a peaceful life.", "Your ideas will bring you success.",
-                  "Something you’ve been waiting for will soon arrive.",
+                  "Something you've been waiting for will soon arrive.",
                   "Opportunities will present themselves when you least expect.",
                   "A new chapter in your life is about to begin.", "You will find happiness in unexpected places.",
                   "Your perseverance will lead to great rewards.", "Someone is secretly inspired by you.",
                   "Good fortune is coming your way very soon.", "Your vision will become reality.",
-                  "You are destined for greatness—believe it.", "Take the risk—success is closer than you think.",
+                  "You are destined for greatness, believe it.", "Take the risk, success is closer than you think.",
                   "A new perspective will reveal hidden opportunities.", "You are on the verge of a breakthrough.",
                   "You will soon discover a hidden talent.", "New friends are coming into your life.",
                   "Something you lost will return to you.", "An unexpected event will bring you joy.",
@@ -29,15 +29,15 @@ local fortunes = {"You will make a valuable discovery.", "An unexpected journey 
                   "The best is yet to come.", "Your next idea will bring you success.",
                   "A fresh start will bring you new insights.", "Your generosity will bring you new opportunities.",
                   "A close friend will help you achieve your goals.",
-                  "You will soon achieve something you’ve been working hard for.",
+                  "You will soon achieve something you've been working hard for.",
                   "A new passion will ignite your spirit.", "You will be surrounded by positive energy.",
                   "An important decision will bring you great happiness.",
                   "Someone you admire will offer valuable advice.", "Trust in the journey, and the rewards will come.",
-                  "You will find joy in life’s simple pleasures.", "Your greatest strength is yet to be revealed.",
+                  "You will find joy in life's simple pleasures.", "Your greatest strength is yet to be revealed.",
                   "A challenge will test your resolve, but you will succeed.",
                   "Your curiosity will lead you to new opportunities.",
                   "You will soon receive good news from an unexpected source.",
-                  "Success is just around the corner—keep going.", "Adventure awaits you in the near future.",
+                  "Success is just around the corner, keep going.", "Adventure awaits you in the near future.",
                   "You will soon receive pleasant news.", "Success is within your grasp.",
                   "A surprise gift will come your way.", "Your kindness will lead to unexpected rewards.",
                   "Now is the time to explore new horizons.", "Good fortune will be yours this week.",
@@ -94,7 +94,7 @@ function Fortune:draw()
     local box_height = #wrappedText * self.font:getHeight() + box_padding * 2
 
     local box_x = (love.graphics.getWidth() - box_width) / 2
-    local box_y = box_margin
+    local box_y = box_margin + box_padding
 
     love.graphics.clear(0.878, 0.769, 0.675)
 
@@ -131,7 +131,7 @@ end
 function Fortune:load()
     math.randomseed(os.time())
     self.fortune = fortunes[math.random(1, #fortunes)]
-    spriteAnimation = Animation:new(sprite, 2, 0.3)
+    spriteAnimation = Animation:new(sprite, 2, 1)
 
     ctrls:on(function(key)
         screenManager:switchTo("Catalog")

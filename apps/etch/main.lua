@@ -30,6 +30,7 @@ end
 
 function Etch:draw()
     -- Draw the points
+    love.graphics.clear(1, 1, 1) -- Black color for drawing
     love.graphics.setColor(0, 0, 0) -- Black color for drawing
     for i = 1, #points - 1 do
         love.graphics.line(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y)
@@ -37,7 +38,7 @@ function Etch:draw()
 end
 
 function Etch:load()
-    love.graphics.setBackgroundColor(255, 255, 255)
+    love.graphics.setBackgroundColor(1, 1, 1)
     ctrls:on(function(key)
         if key == 'B' then
             screenManager:switchTo("Catalog")
