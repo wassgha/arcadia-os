@@ -11,7 +11,7 @@ function Etch:new()
 end
 
 function Etch:update()
-    dx, dy = ctrls:joystickXY()
+    dx, dy = arcadia.controls:joystickXY()
 
     if dx ~= 0 then
         x = x + dx
@@ -30,18 +30,18 @@ end
 
 function Etch:draw()
     -- Draw the points
-    love.graphics.clear(1, 1, 1) -- Black color for drawing
-    love.graphics.setColor(0, 0, 0) -- Black color for drawing
+    love.graphics.clear(arcadia.theme.bg)
+    love.graphics.setColor(arcadia.theme.text)
     for i = 1, #points - 1 do
         love.graphics.line(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y)
     end
 end
 
 function Etch:load()
-    love.graphics.setBackgroundColor(1, 1, 1)
-    ctrls:on(function(key)
+    love.graphics.setBackgroundColor(arcadia.theme.bg)
+    arcadia.controls:on(function(key)
         if key == 'B' then
-            screenManager:switchTo("Catalog")
+            arcadia.navigation:switchTo("Launcher")
             return
         end
         if key == 'A' then

@@ -1,5 +1,8 @@
 local Button = require("components.button")
 local Focusable = require("components.focusable")
+local Slider = require("components.slider")
+local Scrollable = require("components.scrollable")
+local Highlightable = require("components.highlightable")
 local Screen = require("lib.screen")
 
 local PlaygroundScreen = setmetatable({}, {
@@ -7,94 +10,160 @@ local PlaygroundScreen = setmetatable({}, {
 })
 PlaygroundScreen.__index = PlaygroundScreen
 
-local SCROLL_SPEED = 10
-
 function PlaygroundScreen:new()
     local instance = setmetatable(Screen.new(self), self)
+    instance.volume = 5
+    instance.progress = 20 -- %
     instance.focused = 1
+    instance.focusableElements = 3
     instance.cols = 2
-    instance.gap = 12
-    instance.offsetX = 0
-    instance.offsetY = 0
-    instance.targetOffsetY = 0
     instance.screenWidth, instance.screenHeight = love.graphics.getDimensions()
-    instance.children = {Focusable:new("tertiary"), Focusable:new("tertiary"), Focusable:new("tertiary"),
-                         Focusable:new("tertiary"), Focusable:new("tertiary"), Focusable:new("tertiary"),
-                         Focusable:new("tertiary"), Focusable:new("tertiary"), Focusable:new("tertiary"),
-                         Focusable:new("tertiary"), Focusable:new("tertiary")}
+    instance:refresh()
 
     return instance
 end
 
 function PlaygroundScreen:draw()
-    local itemWidth = math.floor((self.screenWidth - self.gap) / self.cols) - self.gap
-    local itemHeight = itemWidth * (2 / 3)
-    for i, child in ipairs(self.children) do
-        local col = (i - 1) % self.cols
-        local row = math.floor((i - 1) / self.cols)
-        child:draw(self.gap + (itemWidth + self.gap) * col - self.offsetX,
-            self.gap + (itemHeight + self.gap) * row - self.offsetY, itemWidth, itemHeight, 6)
-    end
+    arcadia.graphics.clear(arcadia.theme.bg)
+    self.slider:render()
+    self.progressBar:render()
+    self.scrollable:render()
+end
+
+function PlaygroundScreen:refresh()
+    self.slider = Slider:new({
+        value = self.volume,
+        min = 1,
+        max = 10,
+        horizontal = false
+    })
+
+    self.progressBar = Slider:new({
+        value = self.progress,
+        min = 1,
+        max = 100,
+        horizontal = true,
+        width = self.screenWidth - 8 - 24,
+        height = 20,
+        style = {
+            position = 'absolute',
+            top = 400,
+            left = 0
+        }
+    })
+
+    self.scrollable = Scrollable:new({
+        style = {
+            top = 20,
+            left = 100,
+            borderColor = {1, 0, 0},
+            padding = 2,
+            borderWidth = 3,
+            overflow = 'hidden'
+        },
+        height = 200,
+        children = {Highlightable:new({
+            focused = self.focused == 1,
+            variant = 'primary',
+            children = {View:new({
+                style = {
+                    width = 100,
+                    height = 40,
+                    backgroundColor = arcadia.theme.transparent,
+                    radius = 5
+                }
+            })}
+        }), Highlightable:new({
+            focused = self.focused == 2,
+            variant = 'secondary',
+            children = {View:new({
+                style = {
+                    width = 100,
+                    height = 40,
+                    backgroundColor = arcadia.theme.transparent,
+                    radius = 5
+                }
+            })}
+        }), Highlightable:new({
+            focused = self.focused == 3,
+            variant = 'tertiary',
+            children = {View:new({
+                style = {
+                    width = 100,
+                    height = 40,
+                    backgroundColor = arcadia.theme.text,
+                    radius = 5
+                }
+            })}
+        })}
+    })
+
+    -- self.slider2 = Slider:new({
+    --     value = self.volume,
+    --     min = 1,
+    --     max = 10,
+    --     horizontal = true
+    -- })
 end
 
 function PlaygroundScreen:update(dt)
-    local itemWidth = math.floor((self.screenWidth - self.gap) / self.cols) - self.gap
-    local itemHeight = itemWidth * (2 / 3)
+    self.progress = self.progress + dt
 
-    local viewportTop = self.targetOffsetY
-    local viewportBottom = self.targetOffsetY + self.screenHeight
-
-    for i, child in ipairs(self.children) do
-        if self.focused == i then
-            child:focus()
-            self.offsetX = 0
-
-            local row = math.floor((i - 1) / self.cols)
-            local itemTop = (itemHeight + self.gap) * row
-            local itemBottom = itemTop + 2 * self.gap + itemHeight
-
-            -- Scroll up if the focused element is above the viewport
-            if itemTop < viewportTop then
-                self.targetOffsetY = itemTop
-                -- Scroll down if the focused element is below the viewport
-            elseif itemBottom > viewportBottom then
-                self.targetOffsetY = itemBottom - self.screenHeight
-            end
-        else
-            child:blur()
-        end
+    if self.progress > 100 then
+        self.progress = 1
     end
 
-    -- Smoothly move the current offsetY towards the targetOffsetY (scrolling animation)
-    self.offsetY = self.offsetY + (self.targetOffsetY - self.offsetY) * math.min(SCROLL_SPEED * dt, 1)
+    self.slider:update(dt)
+    self.progressBar:update(dt)
+    self.scrollable:update(dt)
 end
 
 function PlaygroundScreen:load()
-    -- Initialize controls
-    ctrls:on(function(key)
+    arcadia.controls:on(function(key)
+        if key == 'B' then
+            arcadia.navigation:switchTo("Home")
+            return
+        end
+
+        -- Focus
         if key == 'RIGHT' then
             self.focused = self.focused + 1
-            if self.focused > #self.children then
+            if self.focused > self.focusableElements then
                 self.focused = 1
             end
         elseif key == 'DOWN' then
             self.focused = self.focused + self.cols
-            if self.focused > #self.children then
+            if self.focused > self.focusableElements then
                 self.focused = 1
             end
         elseif key == 'LEFT' then
             self.focused = self.focused - 1
             if self.focused < 1 then
-                self.focused = #self.children
+                self.focused = self.focusableElements
             end
         elseif key == 'UP' then
             self.focused = self.focused - self.cols
             if self.focused < 1 then
-                self.focused = #self.children
+                self.focused = self.focusableElements
             end
-        else
-            screenManager:switchTo("Home")
         end
+
+        -- Volume Control 
+
+        if key == 'UP' then
+            self.volume = self.volume + 1
+            if self.volume > 10 then
+                self.volume = 10
+            end
+        elseif key == 'DOWN' then
+            self.volume = self.volume - 1
+            if self.volume < 1 then
+                self.volume = 1
+            end
+        end
+
+        self:refresh()
+        self.scrollable:scrollTo(self.focused)
     end)
 end
 

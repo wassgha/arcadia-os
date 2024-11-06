@@ -1,11 +1,8 @@
-local ImageStore = require("lib.image_store")
-local Animation = require("lib.animation")
-
 local Fortune = setmetatable({}, {})
 Fortune.__index = Fortune
 
-local background = ImageStore.loadImage("apps/fortune/cover.jpg")
-local sprite = ImageStore.loadImage("apps/fortune/sprite.jpg")
+local background = arcadia.cache.load("apps/fortune/cover.jpg")
+local sprite = arcadia.cache.load("apps/fortune/sprite.jpg")
 local spriteAnimation
 
 local fortunes = {"You will make a valuable discovery.", "An unexpected journey will soon begin.",
@@ -131,10 +128,10 @@ end
 function Fortune:load()
     math.randomseed(os.time())
     self.fortune = fortunes[math.random(1, #fortunes)]
-    spriteAnimation = Animation:new(sprite, 2, 1)
+    spriteAnimation = arcadia.animation:new(sprite, 2, 1)
 
-    ctrls:on(function(key)
-        screenManager:switchTo("Catalog")
+    arcadia.controls:on(function(key)
+        arcadia.navigation:switchTo("Launcher")
         return
     end)
 end

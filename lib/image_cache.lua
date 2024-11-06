@@ -1,13 +1,13 @@
--- image_store.lua
+-- image_cache.lua
 local images = {} -- The global image store
 
-local ImageStore = {}
+local ImageCache = {}
 
-function ImageStore.loadImage(filename)
+function ImageCache.load(filename)
     if not images[filename] then
         images[filename] = love.graphics.newImage(filename)
     end
     return images[filename]
 end
 
-return ImageStore
+return ImageCache

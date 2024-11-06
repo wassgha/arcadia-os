@@ -8,55 +8,74 @@ HomeScreen.__index = HomeScreen
 
 function HomeScreen:new()
     local instance = setmetatable(Screen.new(self), self)
+    instance.menu = nil
+    return instance
+end
+
+function HomeScreen:draw()
+    if not self.menu then
+        return
+    end
+    self.menu:draw(28, 28) -- Draw the menu
+end
+
+function HomeScreen:load()
+    local devMode = arcadia.config:get(ConfigKey.DEV_MODE)
 
     -- Define menu items
-    local items = {{
+    local items = {}
+    table.add(items, {{
         label = "Games & Things",
         icon = "gamepad",
         onSelect = function()
-            screenManager:switchTo('Catalog')
+            arcadia.navigation:switchTo('Launcher')
             return
         end
     }, {
         label = "Catalog",
         icon = "shopping-bag",
         onSelect = function()
-            screenManager:switchTo('Catalog')
+            arcadia.navigation:switchTo('Catalog')
             return
         end
     }, {
         label = "Options",
         icon = "command",
         onSelect = function()
-            screenManager:switchTo('Options')
+            arcadia.navigation:switchTo('Options')
             return
         end
-    }, {
-        label = "Developer Playground",
-        icon = "debug",
-        onSelect = function()
-            screenManager:switchTo('Playground')
-            return
-        end
-    }, {
+    }})
+    if devMode then
+        table.insert(items, {
+            label = "Developer Playground",
+            icon = "debug",
+            onSelect = function()
+                arcadia.navigation:switchTo('Playground')
+                return
+            end
+        })
+    end
+
+    table.add(items, {{
         label = "Update Arcadia",
         icon = "reload",
         onSelect = function()
-            screenManager:switchTo('Update')
+            arcadia.navigation:switchTo('Update')
             return
         end
     }, {
         label = "Donate",
         icon = "heart",
         onSelect = function()
-            screenManager:switchTo('Donate')
+            arcadia.navigation:switchTo('Donate')
             return
         end
     }, {
         label = "About",
         icon = "info-box",
         onSelect = function()
-            screenManager:switchTo('About')
+            arcadia.navigation:switchTo('About')
             return
         end
     }, {
@@ -66,19 +85,13 @@ function HomeScreen:new()
             os.exit()
             return
         end
-    }}
-    instance.menu = Menu:new(items, 24, 42, 8)
+    }})
 
-    return instance
-end
+    -- Create a menu
+    self.menu = Menu:new(items, 24, 42, 8)
 
-function HomeScreen:draw()
-    self.menu:draw(28, 28) -- Draw the menu
-end
-
-function HomeScreen:load()
     -- Initialize controls
-    ctrls:on(function(key)
+    arcadia.controls:on(function(key)
         self.menu:keypressed(key)
     end)
 end

@@ -5,7 +5,7 @@ dev:
 
 bundle:
 	@echo "Creating distribution zip file: $(ZIP_FILE)"
-	@zip -r $(DIST) . -x "*.git*" "*.zip" "Makefile" ".DS_Store" "dist" "api"
+	@zip -r $(DIST) . -x "*.git*" "*.zip" "Makefile" ".DS_Store" "dist/*" "api/*" "$(ZIP_FILE)"
 
 distribute:
 	@chmod +x ./increment_version.sh

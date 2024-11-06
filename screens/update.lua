@@ -110,7 +110,7 @@ function UpdateScreen:load()
     if checkForUpdates() then
         love.event.quit('restart')
     end
-    screenManager:switchTo('Home')
+    arcadia.navigation:switchTo('Home')
 end
 
 return UpdateScreen

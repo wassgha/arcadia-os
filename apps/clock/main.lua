@@ -26,19 +26,19 @@ function Clock:draw()
 
     local centerX, centerY = love.graphics.getWidth() / 2, love.graphics.getHeight() / 2
 
-    love.graphics.clear(0, 0, 0)
+    love.graphics.clear(arcadia.theme.bg)
 
     if self.face == ClockFaces.DIGITAL then
         love.graphics.setFont(self.font)
 
         -- Set text color
-        love.graphics.setColor(1, 1, 1) -- White text
+        love.graphics.setColor(arcadia.theme.text) -- White text
 
         local timeText = string.format("%02d:%02d:%02d", hour, minute, second)
 
         -- Get the width and height of the current time text
-        local timeWidth = self.font:getWidth('88:88:88')
-        local timeHeight = self.font:getHeight('88:88:88')
+        local timeWidth = self.font:getWidth(timeText)
+        local timeHeight = self.font:getHeight(timeText)
 
         -- Calculate the position to center the text
         local x = centerX - (timeWidth / 2)
@@ -50,7 +50,7 @@ function Clock:draw()
         local radius = (3 * love.graphics.getHeight() / 4) / 2
 
         -- Draw analog clock
-        love.graphics.setColor(1, 1, 1) -- Reset color to white
+        love.graphics.setColor(arcadia.theme.text) -- Reset color to white
         -- Draw analog clock using arcs for each hour
         love.graphics.setLineWidth(5)
         for i = 0, 11 do
@@ -62,7 +62,7 @@ function Clock:draw()
             love.graphics.circle("fill", dotX, dotY, 4) -- Draw the dot
         end
 
-        love.graphics.setColor(1, 1, 1) -- Reset color to white
+        love.graphics.setColor(arcadia.theme.text) -- Reset color to white
 
         -- Draw hour hand
         local hourAngle = math.rad((hour % 12) * 30 + (minute / 60) * 30)
@@ -129,9 +129,9 @@ function Clock:draw()
 end
 
 function Clock:load()
-    ctrls:on(function(key)
+    arcadia.controls:on(function(key)
         if key == 'B' then
-            screenManager:switchTo("Catalog")
+            arcadia.navigation:switchTo("Launcher")
             return
         end
         if key == 'A' then

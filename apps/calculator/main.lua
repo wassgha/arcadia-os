@@ -79,7 +79,7 @@ end
 
 function Calculator:keypressed(key)
     if key == "B" then
-        screenManager:switchTo("Catalog")
+        arcadia.navigation:switchTo("Launcher")
     elseif key == "A" then
         self:calculate()
     elseif key == "Y" then
@@ -100,9 +100,9 @@ end
 function Calculator:draw()
     local centerX, centerY = love.graphics.getWidth() / 2, love.graphics.getHeight() / 2
 
-    love.graphics.clear(0, 0, 0)
+    love.graphics.clear(arcadia.theme.bg)
     love.graphics.setFont(self.font)
-    love.graphics.setColor(1, 1, 1)
+    love.graphics.setColor(arcadia.theme.text)
 
     -- Get the width and height of the display text
     local displayWidth = self.font:getWidth(self.display)
@@ -118,7 +118,7 @@ function Calculator:draw()
 end
 
 function Calculator:load()
-    ctrls:on(function(key)
+    arcadia.controls:on(function(key)
         self:keypressed(key)
     end)
 end

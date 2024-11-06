@@ -8,10 +8,9 @@ Variant = {
     TERTIARY = 'tertiary'
 }
 
-function Focusable:new(variant)
+function Focusable:new()
     local instance = setmetatable({}, Focusable)
 
-    instance.variant = variant or Variant.PRIMARY
     instance.focused = false
     instance.screenWidth, instance.screenHeight = love.graphics.getDimensions()
     instance.onPress = function()
@@ -41,34 +40,35 @@ function Focusable:focused()
     return self.focused
 end
 
-function Focusable:draw(x, y, width, height, padding)
+function Focusable:draw(x, y, width, height, padding, variant)
     local startX = x
     local startY = y
     local radius = 8
     local paddingX = padding
     local paddingY = padding
+    local variant = variant or Variant.PRIMARY
 
-    love.graphics.setColor(0.9, 0.9, 0.9)
+    love.graphics.setColor(arcadia.theme.highlight)
 
     if self.focused then
         love.graphics.setLineStyle("rough")
         love.graphics.setLineWidth(3)
-        if self.variant == Variant.PRIMARY then
+        if variant == Variant.PRIMARY then
             love.graphics.rectangle('fill', startX - paddingX, startY - paddingY, width + 2 * paddingX,
                 height + 2 * paddingY, radius, radius)
-            love.graphics.setColor(0, 0, 0)
-        elseif self.variant == Variant.SECONDARY or self.variant == Variant.TERTIARY then
+            love.graphics.setColor(arcadia.theme.bg)
+        elseif variant == Variant.SECONDARY or variant == Variant.TERTIARY then
             love.graphics.rectangle('line', startX - paddingX, startY - paddingY, width + 2 * paddingX,
                 height + 2 * paddingY, radius, radius)
-            love.graphics.setColor(1, 1, 1)
+            love.graphics.setColor(arcadia.theme.text)
         end
     else
-        love.graphics.setColor(1, 1, 1)
+        love.graphics.setColor(arcadia.theme.text)
     end
 
-    if self.variant == Variant.TERTIARY then
+    if variant == Variant.TERTIARY then
         love.graphics.setLineWidth(1)
-        love.graphics.setColor(0.4, 0.4, 0.4)
+        love.graphics.setColor(arcadia.theme.focus)
         love.graphics.rectangle('line', startX, startY, width, height, (radius + 2) / 2, (radius + 2) / 2)
     end
 

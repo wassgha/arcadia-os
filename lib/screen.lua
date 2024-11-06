@@ -15,15 +15,15 @@ function Screen:new(options)
 end
 
 function Screen:load()
-    print("Screen loaded")
+    -- Any initialization logic
 end
 
 function Screen:onEnter()
-    print("Screen entered.")
+    -- Handle logic for transitioning into the screen
 end
 
 function Screen:onExit()
-    print("Screen exited.")
+    -- Handle logic before exiting the screen
 end
 
 function Screen:update(dt)

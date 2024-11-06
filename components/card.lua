@@ -1,8 +1,6 @@
 local Focusable = require("components.focusable")
-local IconStore = require("lib.icon_store")
-local ImageStore = require("lib.image_store")
-
-Card = setmetatable({}, {
+local Button = require("components.button")
+local Card = setmetatable({}, {
     __index = Focusable
 })
 Card.__index = Card
@@ -46,7 +44,7 @@ function Card:draw(x, y, width, height)
 
     local iconSize = self.icon and 48 or 0
 
-    Focusable.draw(self, startX, startY, cardWidth, cardHeight, self.padding)
+    Focusable.draw(self, startX, startY, cardWidth, cardHeight, self.padding, Variant.TERTIARY)
 
     local function stencilFunction()
         roundedRectangle(startX + 1, startY + 1, cardWidth - 2, cardHeight - 2, radius / 2)
@@ -57,7 +55,7 @@ function Card:draw(x, y, width, height)
 
     -- Draw the placeholder icon if provided
     if self.icon then
-        local icon = IconStore.loadIcon("pixelarticons/light/" .. self.icon)
+        local icon = arcadia.icons.load("pixelarticons/light/" .. self.icon)
         local scaleFactor = iconSize / icon.getWidth(icon)
         if icon then
             love.graphics.draw(icon, startX + cardWidth / 2 - iconSize / 2, startY + cardHeight / 2 - iconSize / 2, 0,
@@ -67,7 +65,7 @@ function Card:draw(x, y, width, height)
 
     -- Draw the placeholder icon if provided
     if self.cover then
-        local cover = ImageStore.loadImage(self.cover)
+        local cover = arcadia.cache.load(self.cover)
         local scaleFactor = cardWidth / cover.getWidth(cover)
         if cover then
             love.graphics.setColor(1, 1, 1, 1)

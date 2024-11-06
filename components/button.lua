@@ -1,14 +1,13 @@
 local Focusable = require("components.focusable")
-local IconStore = require("lib.icon_store")
 
-Button = setmetatable({}, {
+local Button = setmetatable({}, {
     __index = Focusable
 })
 Button.__index = Button
 
 -- Constructor for the Menu class
 function Button:new(label, size, variant, padding, icon)
-    local instance = setmetatable(Focusable.new(variant), self)
+    local instance = setmetatable(Focusable.new(), self)
 
     -- Initialize the menu properties
     instance.label = label or ""
@@ -40,7 +39,7 @@ function Button:draw(x, y)
 
     -- Draw the leading icon if provided
     if self.icon then
-        local icon = IconStore.loadIcon("pixelarticons/light/" .. self.icon)
+        local icon = arcadia.icons.load("pixelarticons/light/" .. self.icon)
         local scaleFactor = iconSize / icon.getWidth(icon)
         if icon then
             love.graphics

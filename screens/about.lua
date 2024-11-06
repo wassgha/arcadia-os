@@ -17,7 +17,7 @@ function AboutScreen:new()
     }, {
         label = "Back",
         onSelect = function()
-            screenManager:switchTo('Home')
+            arcadia.navigation:switchTo('Home')
         end
     }}
     instance.menu = Menu:new(items, 24, 42, 8)
@@ -31,7 +31,7 @@ end
 
 function AboutScreen:load()
     -- Initialize controls
-    ctrls:on(function(key)
+    arcadia.controls:on(function(key)
         self.menu:keypressed(key)
     end)
 end

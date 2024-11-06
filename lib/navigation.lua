@@ -1,20 +1,20 @@
--- screen.lua
-ScreenManager = {}
-ScreenManager.__index = ScreenManager
+-- navigation.lua
+Navigation = {}
+Navigation.__index = Navigation
 
-function ScreenManager:new()
-    local instance = setmetatable({}, ScreenManager)
+function Navigation:new()
+    local instance = setmetatable({}, Navigation)
     instance.screens = {}
     instance.currentScreen = nil
     instance.currentModal = nil
     return instance
 end
 
-function ScreenManager:addScreen(name, screen)
+function Navigation:addScreen(name, screen)
     self.screens[name] = screen
 end
 
-function ScreenManager:switchTo(name, params)
+function Navigation:switchTo(name, params)
     if self.screens[name] and self.screens[name].options.presentation == ScreenPresentation.CARD then
         if self.currentScreen and self.currentScreen.onExit then
             self.currentScreen:onExit()
@@ -48,14 +48,14 @@ function ScreenManager:switchTo(name, params)
     end
 end
 
-function ScreenManager:update(dt)
+function Navigation:update(dt)
     if self.currentScreen and self.currentScreen.update then
         self.currentScreen:update(dt)
     end
 end
 
-function ScreenManager:draw()
-    love.graphics.clear(0, 0, 0)
+function Navigation:draw()
+    love.graphics.clear(arcadia.theme.bg)
     if self.currentScreen and self.currentScreen.draw then
         self.currentScreen:draw()
     end
@@ -68,4 +68,4 @@ function ScreenManager:draw()
     end
 end
 
-return ScreenManager
+return Navigation

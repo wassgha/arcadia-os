@@ -55,7 +55,7 @@ function Controls:load()
     -- Select the first Joystick
     joysticks = love.joystick.getJoysticks()
     if #joysticks == 0 then
-        print("No joystick found!")
+        print("–– no joystick found")
     else
         joystick = joysticks[1]
     end

@@ -1,13 +1,13 @@
 -- icon_store.lua
 local icons = {} -- The global icon store
 
-local IconStore = {}
+local IconCache = {}
 
-function IconStore.loadIcon(filename)
+function IconCache.load(filename)
     if not icons[filename] then
         icons[filename] = love.graphics.newImage("assets/icons/" .. filename .. ".png")
     end
     return icons[filename]
 end
 
-return IconStore
+return IconCache
