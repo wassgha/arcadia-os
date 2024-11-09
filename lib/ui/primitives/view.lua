@@ -1,5 +1,3 @@
-local Component = require('lib.ui.primitives.component')
-
 View = {}
 View.__index = View
 
@@ -132,11 +130,11 @@ function View:render(pre, post)
         end
     end
 
-    love.graphics.pop()
-
     if post then
         post()
     end
+
+    love.graphics.pop()
 
     love.graphics.pop()
 end

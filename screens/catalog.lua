@@ -9,13 +9,23 @@ CatalogScreen.__index = CatalogScreen
 function CatalogScreen:new()
     local instance = setmetatable(Screen.new(self), self)
 
-    instance.button = Button:new('Coming soon. Stay tuned!', 28, 'PRIMARY', 8, 'cake')
+    instance.button = Button:new({
+        key = 'coming-soon',
+        label = 'Coming soon. Stay tuned!',
+        size = 28,
+        variant = 'primary',
+        leading = 'cake',
+        style = {
+            left = love.graphics.getWidth() / 2 - 190,
+            top = love.graphics.getHeight() / 2 - 20
+        }
+    })
 
     return instance
 end
 
 function CatalogScreen:draw()
-    self.button:draw(love.graphics.getWidth() / 2 - 190, love.graphics.getHeight() / 2 - 20) -- Draw the menu
+    self.button:render() -- Draw the menu
 end
 
 function CatalogScreen:load()

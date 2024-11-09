@@ -4,6 +4,7 @@ local Card = setmetatable({}, {
     __index = Focusable
 })
 Card.__index = Card
+Card.__name = 'Card'
 
 -- Helper function to draw a rounder rectangle mask
 local function roundedRectangle(x, y, width, height, radius)
@@ -17,16 +18,20 @@ end
 
 -- Constructor for the Menu class
 function Card:new(label, variant, padding, icon, cover)
-    local instance = setmetatable(Focusable.new(variant), self)
+    local instance = setmetatable(Focusable.new(self), self)
 
     -- Initialize the menu properties
     instance.icon = icon or nil
     instance.cover = cover or nil
     instance.padding = padding
-    instance.variant = variant or Variant.PRIMARY
     instance.screenWidth, instance.screenHeight = love.graphics.getDimensions()
     if label ~= "" then
-        instance.label = Button:new(label, 24, "primary", 8)
+        instance.label = Button:new({
+            key = 'card-label-' .. label,
+            label = label,
+            size = 24,
+            variant = "primary"
+        })
         instance.label:focus()
     end
 

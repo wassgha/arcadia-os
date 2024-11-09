@@ -76,10 +76,10 @@ function Scrollable:scrollTo(idx, animated)
         local containerTop = self.layout.top + self.layout.margin[2] + self.layout.padding[2]
         local containerBottom = containerTop + self.layout.height
 
-        if (childTop + self.targetOffsetY) < containerTop then
+        if (childTop + self.offsetY) < containerTop then
             -- Child is above the visible area, align it to the top
             self.targetOffsetY = -(childTop - containerTop)
-        elseif (childBottom + self.targetOffsetY) > containerBottom then
+        elseif (childBottom + self.offsetY) > containerBottom then
             -- Child is below the visible area, align it to the bottom
             self.targetOffsetY = -(childBottom - containerBottom)
         else
@@ -102,7 +102,7 @@ function Scrollable:root()
     local width = props.width
     local height = props.height
 
-    return Highlightable:new({
+    return Focusable:new({
         key = 'scrollable-container-' .. props.key,
         style = table.join(props.style or {}, {
             width = width,

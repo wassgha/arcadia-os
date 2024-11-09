@@ -51,7 +51,13 @@ function OptionsScreen:load()
             arcadia.navigation:switchTo('Home')
         end
     }}
-    self.menu = Menu:new(items, 24, 42, 8)
+    self.menu = Menu:new({
+        style = {
+            padding = 12
+        },
+        size = 20,
+        items = items
+    })
 
     -- Initialize controls
     arcadia.controls:on(function(key)

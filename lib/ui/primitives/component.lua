@@ -20,12 +20,16 @@ function Component:new(props)
     end
     local instance = setmetatable({}, self)
     instance.props = props or {}
-    instance.state = {}
+    instance.state = instance:derivedStateFromProps(props) or {}
     instance.children = instance.props.children or {}
     instance.component = instance:root()
     instance.layout = instance.component.layout
     ComponentRegistry[self.__name .. (instance.props.key or '')] = instance
     return instance
+end
+
+function Component:derivedStateFromProps(props)
+    return {}
 end
 
 function Component:setState(newState)

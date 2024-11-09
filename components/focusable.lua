@@ -1,78 +1,79 @@
--- focusable.lua
-Focusable = {}
-Focusable.__index = Focusable
+local Component = require('lib.ui.primitives.component')
+require('helpers.pretty')
 
-Variant = {
+Focusable = setmetatable({}, Component)
+Focusable.__index = Focusable
+Focusable.__name = 'Focusable'
+
+local Variant = {
     PRIMARY = 'primary',
     SECONDARY = 'secondary',
     TERTIARY = 'tertiary'
 }
 
-function Focusable:new()
-    local instance = setmetatable({}, Focusable)
-
-    instance.focused = false
-    instance.screenWidth, instance.screenHeight = love.graphics.getDimensions()
-    instance.onPress = function()
-        return
-    end
-
-    return instance
+function Focusable:new(props)
+    return Component.new(self, props)
 end
 
-function Focusable:onPress(callback)
-    if type(callback) == "function" then
-        self.onPress = callback
-    else
-        error("Callback must be a function")
-    end
+function Focusable:derivedStateFromProps(props)
+    return {
+        focused = props.focused or false
+    }
 end
 
 function Focusable:focus()
-    self.focused = true
+    self:setState({
+        focused = true
+    })
 end
 
 function Focusable:blur()
-    self.focused = false
+    self:setState({
+        focused = false
+    })
 end
 
 function Focusable:focused()
-    return self.focused
+    local state = self.state or {}
+    return state.focused or false
 end
 
-function Focusable:draw(x, y, width, height, padding, variant)
-    local startX = x
-    local startY = y
-    local radius = 8
-    local paddingX = padding
-    local paddingY = padding
-    local variant = variant or Variant.PRIMARY
-
-    love.graphics.setColor(arcadia.theme.highlight)
-
-    if self.focused then
-        love.graphics.setLineStyle("rough")
-        love.graphics.setLineWidth(3)
-        if variant == Variant.PRIMARY then
-            love.graphics.rectangle('fill', startX - paddingX, startY - paddingY, width + 2 * paddingX,
-                height + 2 * paddingY, radius, radius)
-            love.graphics.setColor(arcadia.theme.bg)
-        elseif variant == Variant.SECONDARY or variant == Variant.TERTIARY then
-            love.graphics.rectangle('line', startX - paddingX, startY - paddingY, width + 2 * paddingX,
-                height + 2 * paddingY, radius, radius)
-            love.graphics.setColor(arcadia.theme.text)
-        end
-    else
-        love.graphics.setColor(arcadia.theme.text)
+function Focusable:root()
+    local props = self.props or {}
+    local state = self.state or {}
+    local onPress = props.onPress or function()
+        return
     end
 
-    if variant == Variant.TERTIARY then
-        love.graphics.setLineWidth(1)
-        love.graphics.setColor(arcadia.theme.focus)
-        love.graphics.rectangle('line', startX, startY, width, height, (radius + 2) / 2, (radius + 2) / 2)
+    local style = {}
+    if props.variant == Variant.PRIMARY then
+        style = table.join(style, {
+            backgroundColor = state.focused and arcadia.theme.text or arcadia.theme.bg,
+            radius = 8,
+            margin = 3
+        })
+    elseif props.variant == Variant.SECONDARY then
+        style = table.join(style, {
+            padding = 3,
+            radius = 8,
+            borderWidth = 3,
+            borderColor = state.focused and arcadia.theme.text or arcadia.theme.transparent,
+            backgroundColor = state.focused and arcadia.theme.bg or arcadia.theme.transparent
+        })
+    elseif props.variant == Variant.TERTIARY then
+        style = table.join(style, {
+            padding = 3,
+            radius = 8,
+            borderWidth = 3,
+            borderColor = state.focused and arcadia.theme.text or arcadia.theme.border
+        })
     end
 
-    -- Render contents
+    return View:new(table.join(props or {}, {
+        style = table.join(props.style or {}, style),
+        horizontal = props.horizontal,
+        children = props.children or {}
+    }))
 end
 
 return Focusable

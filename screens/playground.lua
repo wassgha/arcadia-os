@@ -1,8 +1,7 @@
 local Button = require("components.button")
-local Focusable = require("components.focusable")
 local Slider = require("components.slider")
 local Scrollable = require("components.scrollable")
-local Highlightable = require("components.highlightable")
+local Focusable = require("components.Focusable")
 local Screen = require("lib.screen")
 
 local PlaygroundScreen = setmetatable({}, {
@@ -64,8 +63,8 @@ function PlaygroundScreen:refresh()
         },
         gap = 12,
         height = 200,
-        children = {Highlightable:new({
-            key = 'highlightable-1',
+        children = {Focusable:new({
+            key = 'focusable-1',
             focused = self.focused == 1,
             variant = 'tertiary',
             children = {View:new({
@@ -76,8 +75,8 @@ function PlaygroundScreen:refresh()
                     radius = 5
                 }
             })}
-        }), Highlightable:new({
-            key = 'highlightable-2',
+        }), Focusable:new({
+            key = 'focusable-2',
             focused = self.focused == 2,
             variant = 'tertiary',
             children = {View:new({
@@ -88,8 +87,8 @@ function PlaygroundScreen:refresh()
                     radius = 5
                 }
             })}
-        }), Highlightable:new({
-            key = 'highlightable-3',
+        }), Focusable:new({
+            key = 'focusable-3',
             focused = self.focused == 3,
             variant = 'tertiary',
             children = {View:new({
@@ -100,8 +99,8 @@ function PlaygroundScreen:refresh()
                     radius = 5
                 }
             })}
-        }), Highlightable:new({
-            key = 'highlightable-4',
+        }), Focusable:new({
+            key = 'focusable-4',
             focused = self.focused == 4,
             variant = 'tertiary',
             children = {View:new({
@@ -112,8 +111,8 @@ function PlaygroundScreen:refresh()
                     radius = 5
                 }
             })}
-        }), Highlightable:new({
-            key = 'highlightable-5',
+        }), Focusable:new({
+            key = 'focusable-5',
             focused = self.focused == 5,
             variant = 'tertiary',
             children = {View:new({
@@ -124,8 +123,8 @@ function PlaygroundScreen:refresh()
                     radius = 5
                 }
             })}
-        }), Highlightable:new({
-            key = 'highlightable-6',
+        }), Focusable:new({
+            key = 'focusable-6',
             focused = self.focused == 6,
             variant = 'tertiary',
             children = {View:new({

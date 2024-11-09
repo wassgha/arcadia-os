@@ -16,7 +16,7 @@ function HomeScreen:draw()
     if not self.menu then
         return
     end
-    self.menu:draw(28, 28) -- Draw the menu
+    self.menu:render() -- Render the menu
 end
 
 function HomeScreen:load()
@@ -88,7 +88,13 @@ function HomeScreen:load()
     }})
 
     -- Create a menu
-    self.menu = Menu:new(items, 24, 42, 8)
+    self.menu = Menu:new({
+        style = {
+            padding = 12
+        },
+        size = 20,
+        items = items
+    })
 
     -- Initialize controls
     arcadia.controls:on(function(key)

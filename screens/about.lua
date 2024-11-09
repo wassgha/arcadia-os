@@ -20,13 +20,19 @@ function AboutScreen:new()
             arcadia.navigation:switchTo('Home')
         end
     }}
-    instance.menu = Menu:new(items, 24, 42, 8)
+    instance.menu = Menu:new({
+        style = {
+            padding = 12
+        },
+        size = 20,
+        items = items
+    })
 
     return instance
 end
 
 function AboutScreen:draw()
-    self.menu:draw(28, 28) -- Draw the menu
+    self.menu:render() -- Draw the menu
 end
 
 function AboutScreen:load()

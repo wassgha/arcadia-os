@@ -1,54 +1,62 @@
-local Focusable = require("components.focusable")
+local Focusable = require('components.focusable')
 
-local Button = setmetatable({}, {
-    __index = Focusable
-})
+Button = setmetatable({}, Focusable)
 Button.__index = Button
+Button.__name = 'Button'
 
--- Constructor for the Menu class
-function Button:new(label, size, variant, padding, icon)
-    local instance = setmetatable(Focusable.new(), self)
-
-    -- Initialize the menu properties
-    instance.label = label or ""
-    instance.icon = icon or nil
-    instance.padding = padding
-    instance.size = size
-    instance.font = love.graphics.newFont("font.ttf", size)
-    instance.variant = variant or Variant.PRIMARY
-    instance.screenWidth, instance.screenHeight = love.graphics.getDimensions()
-
+function Button:new(props)
+    local instance = Focusable.new(self, props)
+    instance.style = instance.props.style or {}
+    instance.gap = instance.props.gap or 12
     return instance
 end
 
--- Render the button on the screen
-function Button:draw(x, y)
-    love.graphics.setFont(self.font)
+function Button:render()
+    Focusable.render(self)
+end
 
-    local startX = x
-    local startY = y
-    local radius = 8
+function Button:root()
+    local props = self.props or {}
+    local state = self.state or {}
+    local gap = self.gap or self.props.gap or 12
+    local width = props.width
+    local height = props.height
 
-    local iconSize = self.icon and self.size or 0
-    local iconGap = self.icon and 12 or 0
+    local leading = props.leading
+    local label = props.label
 
-    local buttonWidth = self.font:getWidth(self.label) + iconSize + iconGap
-    local buttonHeight = self.font:getHeight(self.label) + self.font:getDescent(self.label)
+    local children = {}
 
-    Focusable.draw(self, startX, startY, buttonWidth, buttonHeight, self.padding)
-
-    -- Draw the leading icon if provided
-    if self.icon then
-        local icon = arcadia.icons.load("pixelarticons/light/" .. self.icon)
-        local scaleFactor = iconSize / icon.getWidth(icon)
-        if icon then
-            love.graphics
-                .draw(icon, startX, startY + buttonHeight / 2 - iconSize / 2, 0, scaleFactor, scaleFactor, 0, 0)
-        end
+    if props.leading then
+        table.insert(children, Image:new({
+            color = state.focused and arcadia.theme.bg or arcadia.theme.text,
+            key = 'button-leading-' .. props.key,
+            size = props.size,
+            src = props.leading
+        }))
     end
 
-    -- Draw the button label
-    love.graphics.printf(self.label, startX + iconSize + iconGap, startY, self.screenWidth, "left")
+    if props.label then
+        table.insert(children, Text:new({
+            key = 'button-label-' .. props.key,
+            style = {
+                color = state.focused and arcadia.theme.bg or arcadia.theme.text
+            },
+            size = props.size,
+            text = label
+        }))
+    end
+
+    return Focusable:new(table.join(props or {}, {
+        key = 'button-' .. props.key,
+        style = table.join(props.style or {}, {
+            width = width,
+            height = height
+        }),
+        gap = gap,
+        horizontal = true,
+        children = children
+    }))
 end
 
 return Button
