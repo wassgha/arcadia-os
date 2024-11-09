@@ -1,13 +1,30 @@
 Component = {}
 Component.__index = Component
+Component.__name = 'Component'
+
+ComponentRegistry = {}
 
 function Component:new(props)
+    props = props or {}
+    local cachedInstance = ComponentRegistry[self.__name .. (props.key or '')]
+    if cachedInstance and
+        table.deepEquals(table.omit(cachedInstance.props, {'children'}), table.omit(props, {'children'})) then
+        -- if children changed
+        if not table.deepEquals(cachedInstance.props.children, props.children) then
+            cachedInstance.props = props or {}
+            cachedInstance.children = props.children or {}
+            cachedInstance.component = cachedInstance.root(cachedInstance)
+            cachedInstance.layout = cachedInstance.component.layout
+        end
+        return cachedInstance
+    end
     local instance = setmetatable({}, self)
     instance.props = props or {}
     instance.state = {}
     instance.children = instance.props.children or {}
     instance.component = instance:root()
     instance.layout = instance.component.layout
+    ComponentRegistry[self.__name .. (instance.props.key or '')] = instance
     return instance
 end
 

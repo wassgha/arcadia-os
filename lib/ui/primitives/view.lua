@@ -61,7 +61,7 @@ function View:root()
 
     for idx, child in ipairs(self.children) do
         if child.root then
-            child:root()
+            child.component = child:root()
         end
 
         if child.layout and child.position ~= 'absolute' then

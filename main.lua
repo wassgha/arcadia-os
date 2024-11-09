@@ -11,8 +11,10 @@ local UpdateScreen = require("screens.update")
 local AppScreen = require("screens.app")
 local PlaygroundScreen = require("screens.playground")
 local LauncherScreen = require("screens.launcher")
+local SplashScreen = require("screens.splash")
 
 -- Create screens
+local SplashScreen = SplashScreen:new()
 local HomeScreen = HomeScreen:new()
 local CatalogScreen = CatalogScreen:new()
 local OptionsScreen = OptionsScreen:new()
@@ -36,6 +38,7 @@ function love.load()
     love.graphics.setBackgroundColor(0, 0, 0)
 
     -- Register Screens
+    arcadia.navigation:addScreen("Splash", SplashScreen)
     arcadia.navigation:addScreen("Home", HomeScreen)
     arcadia.navigation:addScreen("Launcher", LauncherScreen)
     arcadia.navigation:addScreen("Catalog", CatalogScreen)
@@ -46,8 +49,7 @@ function love.load()
     arcadia.navigation:addScreen("About", AboutScreen)
 
     -- Switch to default screen
-    local startupScreen = arcadia.config:get(ConfigKey.STARTUP_SCREEN) == 'Home' and 'Home' or 'Playground'
-    arcadia.navigation:switchTo(startupScreen)
+    arcadia.navigation:switchTo("Splash")
 end
 
 function love.keypressed(key)

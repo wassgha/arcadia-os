@@ -1,3 +1,6 @@
+-- Disable JIT
+jit.off()
+
 -- Augment Lua Language
 require('lib.lang_extras')
 

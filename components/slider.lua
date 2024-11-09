@@ -2,10 +2,10 @@ local Component = require('lib.ui.primitives.component')
 
 Slider = setmetatable({}, Component)
 Slider.__index = Slider
+Slider.__name = 'Slider'
 
 function Slider:new(props)
-    local instance = setmetatable(Component.new(self, props), self)
-    return instance
+    return Component.new(self, props)
 end
 
 function Slider:root()

@@ -3,6 +3,7 @@ require('helpers.pretty')
 
 Highlightable = setmetatable({}, Component)
 Highlightable.__index = Highlightable
+Highlightable.__name = 'Highlightable'
 
 local Variant = {
     PRIMARY = 'primary',
@@ -11,8 +12,7 @@ local Variant = {
 }
 
 function Highlightable:new(props)
-    local instance = setmetatable(Component.new(self, props), self)
-    return instance
+    return Component.new(self, props)
 end
 
 function Highlightable:root()
@@ -47,11 +47,11 @@ function Highlightable:root()
         })
     end
 
-    return View:new({
+    return View:new(table.join(props or {}, {
         style = table.join(props.style or {}, style),
         horizontal = props.horizontal,
         children = props.children or {}
-    })
+    }))
 end
 
 return Highlightable

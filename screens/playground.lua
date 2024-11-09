@@ -15,8 +15,8 @@ function PlaygroundScreen:new()
     instance.volume = 5
     instance.progress = 20 -- %
     instance.focused = 1
-    instance.focusableElements = 3
-    instance.cols = 2
+    instance.focusableElements = 6
+    instance.cols = 1
     instance.screenWidth, instance.screenHeight = love.graphics.getDimensions()
     instance:refresh()
 
@@ -32,6 +32,7 @@ end
 
 function PlaygroundScreen:refresh()
     self.slider = Slider:new({
+        key = 'slider-1',
         value = self.volume,
         min = 1,
         max = 10,
@@ -39,6 +40,7 @@ function PlaygroundScreen:refresh()
     })
 
     self.progressBar = Slider:new({
+        key = 'slider-2',
         value = self.progress,
         min = 1,
         max = 100,
@@ -53,18 +55,19 @@ function PlaygroundScreen:refresh()
     })
 
     self.scrollable = Scrollable:new({
+        key = 'scrollable-1',
         style = {
             top = 20,
             left = 100,
-            borderColor = {1, 0, 0},
-            padding = 2,
-            borderWidth = 3,
-            overflow = 'hidden'
+            overflow = 'hidden',
+            radius = 12
         },
+        gap = 12,
         height = 200,
         children = {Highlightable:new({
+            key = 'highlightable-1',
             focused = self.focused == 1,
-            variant = 'primary',
+            variant = 'tertiary',
             children = {View:new({
                 style = {
                     width = 100,
@@ -74,8 +77,9 @@ function PlaygroundScreen:refresh()
                 }
             })}
         }), Highlightable:new({
+            key = 'highlightable-2',
             focused = self.focused == 2,
-            variant = 'secondary',
+            variant = 'tertiary',
             children = {View:new({
                 style = {
                     width = 100,
@@ -85,7 +89,44 @@ function PlaygroundScreen:refresh()
                 }
             })}
         }), Highlightable:new({
+            key = 'highlightable-3',
             focused = self.focused == 3,
+            variant = 'tertiary',
+            children = {View:new({
+                style = {
+                    width = 100,
+                    height = 40,
+                    backgroundColor = arcadia.theme.transparent,
+                    radius = 5
+                }
+            })}
+        }), Highlightable:new({
+            key = 'highlightable-4',
+            focused = self.focused == 4,
+            variant = 'tertiary',
+            children = {View:new({
+                style = {
+                    width = 100,
+                    height = 40,
+                    backgroundColor = arcadia.theme.transparent,
+                    radius = 5
+                }
+            })}
+        }), Highlightable:new({
+            key = 'highlightable-5',
+            focused = self.focused == 5,
+            variant = 'tertiary',
+            children = {View:new({
+                style = {
+                    width = 100,
+                    height = 40,
+                    backgroundColor = arcadia.theme.transparent,
+                    radius = 5
+                }
+            })}
+        }), Highlightable:new({
+            key = 'highlightable-6',
+            focused = self.focused == 6,
             variant = 'tertiary',
             children = {View:new({
                 style = {
